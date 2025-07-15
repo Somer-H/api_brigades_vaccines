@@ -19,6 +19,6 @@ class SensorsVaccineEdit(BaseModel):
     measurementUnit: Optional[str] = None
     nameSensor: Optional[str] = None
     information: Optional[float] = None
-
+    idVaccineBox: Optional[int] = None
     class Config:
         orm_mode = True
