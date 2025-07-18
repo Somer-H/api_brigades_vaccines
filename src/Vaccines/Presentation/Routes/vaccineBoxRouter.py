@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from ..Controllers.vaccineBoxController import createVaccineBoxController, getVaccineBoxByIdController, editVaccineBoxController, deleteVaccineBoxController, getVaccineBoxController
 
 router = APIRouter()

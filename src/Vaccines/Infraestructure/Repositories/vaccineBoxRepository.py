@@ -1,4 +1,4 @@
-from ...Application.Models.vaccineBoxModel import VaccineBoxModel
+from ...Domain.Models.vaccineBoxModel import VaccineBoxModel
 from ...Domain.Scheme.vaccineScheme import VaccineBox, EditVaccineBox, VaccineBoxBase
 from sqlalchemy.orm import Session
 
@@ -36,7 +36,7 @@ def editVaccineBoxRepository(vaccineToEdit: EditVaccineBox, db: Session) -> Vacc
             db.rollback()
             raise e
      
-def deleteVaccineBoxRepository(id: int, db: Session) -> bool | None:
+def deleteVaccineBoxRepository(id: int, db: Session) -> bool:
     try:
         vaccineBoxToDelete = db.query(VaccineBoxModel).filter(VaccineBoxModel.idVaccineBox == id).first()
         if not vaccineBoxToDelete:

@@ -14,9 +14,4 @@ def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Sessi
         raise HTTPException(status_code=400, detail="Se requiere una Hielera de vacunas relacionada")
     return createSensorsVaccineService(sensorsVaccine, db)
 def getSensorsVaccineController(db: Session = Depends(get_db)) -> list[SensorsVaccine]:
-    try: 
         return getSensorsVaccineService(db)
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
