@@ -41,7 +41,7 @@ def editUserMedicPersonalService(id: int, userMedicPersonalToEdit: UserMedicPers
             raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def deleteUserMedicPersonalController(id: int, db: Session) -> str:
+def deleteUserMedicPersonalService(id: int, db: Session) -> str:
     try:
         if deleteUserMedicPersonalRepository(id, db) == False:
             raise HTTPException(status_code=404, detail="No se encontró el Usuario médico personal")
