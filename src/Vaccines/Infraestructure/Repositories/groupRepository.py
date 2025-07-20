@@ -1,4 +1,4 @@
-from ...Domain.Models.groupModel import GroupModel
+from ...Infraestructure.Models.groupModel import GroupModel
 from ...Domain.Scheme.groupScheme import GroupSchemeBase, GroupScheme
 from sqlalchemy.orm import Session
 

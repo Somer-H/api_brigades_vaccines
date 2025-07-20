@@ -7,7 +7,7 @@ class UserMedicPersonalSchemeBase(BaseModel):
     role: str
     groupIdGroup: int
     name: str
-    lastName: str
+    lastname: str
     class Config:
         orm_mode = True
 class UserMedicPersonalScheme(UserMedicPersonalSchemeBase):
@@ -21,7 +21,21 @@ class UserMedicPersonalEditScheme(BaseModel):
     role: Optional[str] = None
     groupIdGroup: Optional[int] = None
     name: Optional[str] = None
-    lastName: Optional[str] = None
+    lastname: Optional[str] = None
 
     class Config:
         orm_mode = True
+class LoginMedicPersonal(BaseModel): 
+    username: str
+    password: str
+
+    class Config: 
+        orm_mode = True
+class UserMedicPersonalResponse(BaseModel): 
+    username: str
+    role: str
+    groupIdGroup: int
+    name: str 
+    lastname: str
+    class Config:
+        orm_mode: True

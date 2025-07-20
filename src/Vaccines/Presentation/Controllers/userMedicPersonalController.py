@@ -1,13 +1,20 @@
-from ...Application.Services.userMedicPersonalService import createUserMedicPersonalService, getUserMedicPersonalService, getUserMedicPersonalByIdService, editUserMedicPersonalService, deleteUserMedicPersonalService
-from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalSchemeBase, UserMedicPersonalScheme, UserMedicPersonalEditScheme
+from ...Application.Services.userMedicPersonalService import createUserMedicPersonalService, getUserMedicPersonalService, getUserMedicPersonalByIdService, editUserMedicPersonalService, deleteUserMedicPersonalService, loginMedicPersonalService
+from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalSchemeBase, UserMedicPersonalScheme, UserMedicPersonalEditScheme, LoginMedicPersonal
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException
+from fastapi.responses import JSONResponse
 from ....Shared.mysql import get_db
 def createUserMedicPersonalController(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session = Depends(get_db)) -> UserMedicPersonalScheme:
     if not userMedicPersonal.name:
         raise HTTPException(status_code=400, detail="El nombre es obligatorio")
-    if not userMedicPersonal.email:
-        raise HTTPException(status_code=400, detail="El email es obligatorio")
+    if not userMedicPersonal.lastname:
+        raise HTTPException(status_code=400, detail="El apellido es obligatorio")
+    if not userMedicPersonal.password: 
+        raise HTTPException(status_code=400, detail="Campo obligatirio")
+    if not userMedicPersonal.groupIdGroup: 
+        raise HTTPException(status_code=400, detail="Campo obligatorio")
+    if not userMedicPersonal.role: 
+        raise HTTPException (status_code=400, detail="Campo obligatorio")
     return createUserMedicPersonalService(userMedicPersonal, db)
 def getUserMedicPersonalController(db: Session = Depends(get_db)) -> list[UserMedicPersonalScheme]:
     return getUserMedicPersonalService(db)
@@ -30,8 +37,6 @@ def editUserMedicPersonalController(id: int, userMedicPersonalToEdit: UserMedicP
         raise HTTPException(status_code=404, detail="No se encontró el Usuario médico personal")
     if userMedicPersonalToEdit.name is not None:
         userMedicPersonalToEditNew.name = userMedicPersonalToEdit.name
-    if userMedicPersonalToEdit.email is not None:
-        userMedicPersonalToEditNew.email = userMedicPersonalToEdit.email
     updatedUserMedicPersonal = editUserMedicPersonalService(id, userMedicPersonalToEdit, db)
     if updatedUserMedicPersonal:
         return updatedUserMedicPersonal
@@ -45,3 +50,10 @@ def deleteUserMedicPersonalController(id: int, db: Session = Depends(get_db)) ->
     if deleteUserMedicPersonalService(id, db) == False:
         raise HTTPException(status_code=404, detail="No se encontró el Usuario médico personal")
     return "Eliminado con éxito"
+
+def loginMedicPersonalController(userToLog: LoginMedicPersonal, db: Session = Depends(get_db)) -> JSONResponse: 
+    if not userToLog.username: 
+        raise HTTPException(status_code=400, detail="Necesita proporcionar un nombre de usuario")
+    if not userToLog.password: 
+        raise HTTPException(status_code=400, detail="Necesita proporcionar una contraseña")
+    return loginMedicPersonalService(userToLog.username,userToLog.password, db)
