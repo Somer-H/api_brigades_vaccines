@@ -2,8 +2,9 @@ from ...Application.Services.groupService import createGroupService, deleteGroup
 from ...Domain.Scheme.groupScheme import GroupSchemeBase, GroupScheme, GroupEditScheme
 from fastapi import Depends, HTTPException
 from ....Shared.mysql import get_db
+from ....Shared.auth import jwtAuth
 from sqlalchemy.orm import Session
-def createGroupController(group: GroupSchemeBase, db: Session = Depends(get_db)) -> GroupScheme:
+def createGroupController(group: GroupSchemeBase, db: Session = Depends(get_db), user_data = Depends(jwtAuth) ) -> GroupScheme:
     if not group.nameGroup or not group.dateGroup:
         raise HTTPException("El nombre y la fecha del grupo son obligatorios")
     if not group.idVaccineBox:
