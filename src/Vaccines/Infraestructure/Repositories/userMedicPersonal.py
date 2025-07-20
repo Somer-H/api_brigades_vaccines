@@ -48,8 +48,6 @@ def deleteUserMedicPersonalRepository(id: int, db: Session) -> bool:
 def getUserMedicPersonalByUsernameRepository(username: str, db: Session) -> UserMedicPersonalScheme | int: 
     try:
         userMedicPersonal = db.query(UserMedicPersonalModel).filter(UserMedicPersonalModel.username == username).first()
-        if not userMedicPersonal:
-            return 1 
         return userMedicPersonal
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
