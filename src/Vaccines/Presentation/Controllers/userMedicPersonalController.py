@@ -3,6 +3,7 @@ from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalSchemeBase
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
+from ....Shared.auth import jwtAuth
 from ....Shared.mysql import get_db
 def createUserMedicPersonalController(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session = Depends(get_db)) -> UserMedicPersonalScheme:
     if not userMedicPersonal.name:
@@ -18,7 +19,7 @@ def createUserMedicPersonalController(userMedicPersonal: UserMedicPersonalScheme
     return createUserMedicPersonalService(userMedicPersonal, db)
 def getUserMedicPersonalController(db: Session = Depends(get_db)) -> list[UserMedicPersonalScheme]:
     return getUserMedicPersonalService(db)
-def getUserMedicPersonalByIdController(id: int, db: Session = Depends(get_db)) -> UserMedicPersonalScheme:
+def getUserMedicPersonalByIdController(id: int, db: Session = Depends(get_db), userData = Depends(jwtAuth)) -> UserMedicPersonalScheme:
     if not id:
         raise HTTPException(status_code=400, detail="Se requiere un ID")
     if id < 0:
@@ -27,7 +28,7 @@ def getUserMedicPersonalByIdController(id: int, db: Session = Depends(get_db)) -
     if not userMedicPersonalToReturn:
         raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
     return userMedicPersonalToReturn
-def editUserMedicPersonalController(id: int, userMedicPersonalToEdit: UserMedicPersonalEditScheme, db: Session = Depends(get_db)) -> UserMedicPersonalScheme:
+def editUserMedicPersonalController(id: int, userMedicPersonalToEdit: UserMedicPersonalEditScheme, db: Session = Depends(get_db), userData = Depends(jwtAuth)) -> UserMedicPersonalScheme:
     if not id:
         raise HTTPException(status_code=400, detail="Se requiere un ID")
     if id < 0:
@@ -42,7 +43,7 @@ def editUserMedicPersonalController(id: int, userMedicPersonalToEdit: UserMedicP
         return updatedUserMedicPersonal
     else:
         raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
-def deleteUserMedicPersonalController(id: int, db: Session = Depends(get_db)) -> str:
+def deleteUserMedicPersonalController(id: int, db: Session = Depends(get_db), userData = Depends(jwtAuth)) -> str:
     if not id:
         raise HTTPException(status_code=400, detail="Se requiere un ID")
     if id < 0:
