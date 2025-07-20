@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from MiddleWares.loginMiddlewWare import validateToken
+from ..Shared.MiddleWares.loginMiddlewWare import validateToken
 
 security = HTTPBearer()
 
