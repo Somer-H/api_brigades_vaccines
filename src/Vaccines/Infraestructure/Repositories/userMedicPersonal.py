@@ -45,7 +45,7 @@ def deleteUserMedicPersonalRepository(id: int, db: Session) -> bool:
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalByUsernameRepository(username: str, db: Session) -> UserMedicPersonalScheme | int: 
+def getUserMedicPersonalByUsernameRepository(username: str, db: Session) -> UserMedicPersonalScheme: 
     try:
         userMedicPersonal = db.query(UserMedicPersonalModel).filter(UserMedicPersonalModel.username == username).first()
         return userMedicPersonal
