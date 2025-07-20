@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from ...Domain.Models.sensorsVaccineModel import SensorsVaccineModel
+from ...Infraestructure.Models.sensorsVaccineModel import SensorsVaccineModel
 from ...Domain.Scheme.sensorsVaccine import SensorsVaccine, SensorsVaccineBase
 
 def createSensorsVaccineRepository(sensorsVaccine: SensorsVaccineBase, db: Session) -> SensorsVaccine:

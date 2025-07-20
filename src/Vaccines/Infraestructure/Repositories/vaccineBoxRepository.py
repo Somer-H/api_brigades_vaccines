@@ -1,4 +1,4 @@
-from ...Domain.Models.vaccineBoxModel import VaccineBoxModel
+from ...Infraestructure.Models.vaccineBoxModel import VaccineBoxModel
 from ...Domain.Scheme.vaccineScheme import VaccineBox, EditVaccineBox, VaccineBoxBase
 from sqlalchemy.orm import Session
 
