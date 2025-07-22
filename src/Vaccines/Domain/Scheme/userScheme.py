@@ -5,13 +5,13 @@ class UserSchemeBase(BaseModel):
     username: str
     password: str
     role: str
-    groupIdGroup: int
+    groupIdGroup: Optional[int] = None
     name: str
     lastname: str
     class Config:
         orm_mode = True
 class UserScheme(UserSchemeBase):
-    idUserMedicPersonal: int
+    idUser: int
 
     class Config:
         orm_mode = True

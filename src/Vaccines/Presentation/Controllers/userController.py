@@ -12,8 +12,6 @@ def createUserController(user: UserSchemeBase, db: Session = Depends(get_db)) ->
         raise HTTPException(status_code=400, detail="El apellido es obligatorio")
     if not user.password: 
         raise HTTPException(status_code=400, detail="Campo obligatirio")
-    if not user.groupIdGroup: 
-        raise HTTPException(status_code=400, detail="Campo obligatorio")
     if not user.role: 
         raise HTTPException (status_code=400, detail="Campo obligatorio")
     return createUserService(user, db)

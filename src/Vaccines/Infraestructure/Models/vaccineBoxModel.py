@@ -6,3 +6,7 @@ class VaccineBoxModel(Base):
     
     idVaccineBox = Column(Integer, primary_key=True, nullable=True, autoincrement=True)
     amountVaccines = Column(Integer, nullable=False)
+class VaccineBoxVaccine(Base): 
+    __tablename__ = "VaccineBoxVaccine"
+    idVaccineBox = Column(Integer, ForeignKey("VaccineBox.idVaccineBox"),primary_key=True, nullable=True)
+    
