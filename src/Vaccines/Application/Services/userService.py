@@ -76,7 +76,7 @@ def deleteUserService(id: int, db: Session) -> str:
         raise HTTPException(status_code=500, detail=str(e))
 def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSONResponse:
     try:
-        userFound = getUserService(user, db)
+        userFound = getUserByUsernameService(user, db)
         if not userFound:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
         if not bcrypt.checkpw(password.encode('utf-8'), userFound.password.encode('utf-8')):
