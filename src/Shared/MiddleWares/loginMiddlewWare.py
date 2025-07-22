@@ -22,6 +22,7 @@ def validateToken(token: str, expected_roles: list = None):
             role = decoded.get("role")
             if not isinstance(role, str):
              return False, {"error": "Claim 'role' inválido o ausente"}
+            print(role)
             if role not in expected_roles:
              return False, {"error": "Rol no autorizado"}
         return True, decoded

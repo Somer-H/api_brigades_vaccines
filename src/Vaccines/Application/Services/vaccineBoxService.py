@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from ...Domain.Scheme.vaccineScheme import VaccineBox, EditVaccineBox, VaccineBoxBase
+from ...Domain.Scheme.vaccineBoxScheme import VaccineBox, EditVaccineBox, VaccineBoxBase
 from ...Infraestructure.Repositories.vaccineBoxRepository import createVaccineBoxRepository, getVaccineBoxRepository, editVaccineBoxRepository, deleteVaccineBoxRepository, getVaccineBoxByIdRepository
 
 def createVaccineBoxService(vaccine: VaccineBoxBase, db: Session) -> VaccineBox:
@@ -31,7 +31,7 @@ def getVaccineBoxByIdService(id: int, db: Session) -> VaccineBox:
     
 def editVaccineBoxService(id: int, vaccineToEdit: EditVaccineBox, db: Session) -> VaccineBox:
     try: 
-        vaccineToEditNew= getVaccineBoxRepository(id, db)
+        vaccineToEditNew= getVaccineBoxByIdRepository(id, db)
         if not vaccineToEditNew:
             raise HTTPException(status_code=404, detail="No se encontró la Hielera de vacunas")
         if vaccineToEdit.amountVaccines is not None:
@@ -48,6 +48,6 @@ def deleteVaccineBoxService(id: int, db: Session) -> str:
     try:
         if deleteVaccineBoxRepository(id, db) == False:
             raise HTTPException(status_code=404, detail="No se encontró la Hielera de vacunas")
-        return "Eliminado con éxtito"
+        return "Eliminado con éxito"
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -82,7 +82,7 @@ def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSO
         if not bcrypt.checkpw(password.encode('utf-8'), userFound.password.encode('utf-8')):
             print(userFound.password)
             raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-        token = generateToken(user, password)
+        token = generateToken(user, userFound.role)
         response_data = UserResponse(
             username=userFound.username,
             role=userFound.role,
