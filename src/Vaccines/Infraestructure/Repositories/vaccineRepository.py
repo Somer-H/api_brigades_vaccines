@@ -7,7 +7,7 @@ def createVaccineRepository (vaccine: VaccineBaseScheme, db: Session) -> Vaccine
         vaccinePost = VaccineModel(**vaccine.dict())
         db.add(vaccinePost)
         db.commit()
-        db.refresh()
+        db.refresh(vaccinePost)
         return vaccinePost
     except Exception as e:
         db.rollback()
