@@ -1,16 +1,17 @@
 from pydantic import BaseModel
 from typing import Optional
+class VaccineBaseScheme(BaseModel):
+    nameVaccine: str
 
-class VaccineBoxBase(BaseModel):
-  amountVaccines : int
-
-class VaccineBox(VaccineBoxBase):
-    idVaccineBox: int
     class Config:
         orm_mode = True
+class VaccineScheme(VaccineBaseScheme):
+    idVaccines: int
 
-class EditVaccineBox(BaseModel):
-    amountVaccines: Optional[int] = None
+    class Config:
+        orm_mode = True
+class VaccineEditScheme(BaseModel):
+    nameVaccine: Optional[str] = None
 
     class Config:
         orm_mode = True
