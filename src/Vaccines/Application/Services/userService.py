@@ -1,48 +1,48 @@
-from ...Infraestructure.Repositories.userRepository import createUserMedicPersonalRepository, getUserMedicPersonalRepository, getUserMedicPersonalByIdRepository, editUserMedicPersonalRepository, deleteUserMedicPersonalRepository, getUserMedicPersonalByUsernameRepository
-from ...Domain.Scheme.userScheme import UserMedicPersonalScheme, UserMedicPersonalSchemeBase, UserMedicPersonalEditScheme, LoginMedicPersonal, UserMedicPersonalResponse
+from ...Infraestructure.Repositories.userRepository import createUserRepository, getUserRepository, getUserByIdRepository, editUserRepository, deleteUserRepository, getUserByUsernameRepository
+from ...Domain.Scheme.userScheme import UserScheme, UserSchemeBase, UserEditScheme, UserResponse
 from fastapi import HTTPException, Depends
 from fastapi.responses import JSONResponse
 import bcrypt
 from ....Shared.MiddleWares.loginMiddlewWare import generateToken
 from ....Shared.mysql import get_db
 from sqlalchemy.orm import Session
-def createUserMedicPersonalService(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session) -> UserMedicPersonalResponse:
+def createUserService(user: UserSchemeBase, db: Session) -> UserResponse:
     try:
-        password = bcrypt.hashpw(userMedicPersonal.password.encode('utf-8'), bcrypt.gensalt())
+        password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
         print(password)
         password = password.decode('utf-8')
         print(password)
-        userMedicPersonal.password = password
-        return createUserMedicPersonalRepository(userMedicPersonal, db)
+        user.password = password
+        return createUserRepository(user, db)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalService(db: Session) -> list[UserMedicPersonalResponse]:
+def getUserService(db: Session) -> list[UserResponse]:
     try:
-        userMedicPersonalList = getUserMedicPersonalRepository(db)
+        userMedicPersonalList = getUserRepository(db)
         if not userMedicPersonalList:
             raise HTTPException(status_code=404, detail="No se encontraron Usuarios médicos personales")
         return userMedicPersonalList
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalByUsernameService(username: str, db: Session) -> UserMedicPersonalScheme:
+def getUserByUsernameService(username: str, db: Session) -> UserScheme:
     try: 
-        user = getUserMedicPersonalByUsernameRepository(username, db)
+        user = getUserByUsernameRepository(username, db)
         if not user: 
             raise HTTPException(status_code=404, detail="Usuario médico no encontrado")
         return user
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalByIdService(id: int, db: Session) -> UserMedicPersonalResponse:
+def getUserByIdService(id: int, db: Session) -> UserResponse:
     try:
-        userMedicPersonalToReturn = getUserMedicPersonalByIdRepository(id, db)
+        userMedicPersonalToReturn = getUserByIdRepository(id, db)
         if not userMedicPersonalToReturn:
             raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
         return userMedicPersonalToReturn
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def editUserMedicPersonalService(id: int, userMedicPersonalToEdit: UserMedicPersonalEditScheme, db: Session) -> UserMedicPersonalResponse:
+def editUserService(id: int, userMedicPersonalToEdit: UserEditScheme, db: Session) -> UserResponse:
     try:
-        userMedicPersonalToEditNew = getUserMedicPersonalByIdRepository(id, db)
+        userMedicPersonalToEditNew = getUserByIdRepository(id, db)
         if not userMedicPersonalToEditNew:
             raise HTTPException(status_code=404, detail="No se encontró el Usuario médico personal")
         if userMedicPersonalToEdit.name is not None:
@@ -60,30 +60,30 @@ def editUserMedicPersonalService(id: int, userMedicPersonalToEdit: UserMedicPers
         if userMedicPersonalToEdit.lastname is not None:
             userMedicPersonalToEditNew.lastname = userMedicPersonalToEdit.lastname
 
-        updatedUserMedicPersonal = editUserMedicPersonalRepository(userMedicPersonalToEditNew, db)
+        updatedUserMedicPersonal = editUserRepository(userMedicPersonalToEditNew, db)
         if updatedUserMedicPersonal:
             return updatedUserMedicPersonal
         else:
             raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def deleteUserMedicPersonalService(id: int, db: Session) -> str:
+def deleteUserService(id: int, db: Session) -> str:
     try:
-        if deleteUserMedicPersonalRepository(id, db) == False:
+        if deleteUserRepository(id, db) == False:
             raise HTTPException(status_code=404, detail="No se encontró el Usuario médico personal")
         return "Eliminado con éxito"
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def loginMedicPersonalService(user: str, password: str, db: Session = Depends(get_db)) -> JSONResponse:
+def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSONResponse:
     try:
-        userFound = getUserMedicPersonalByUsernameService(user, db)
+        userFound = getUserService(user, db)
         if not userFound:
             raise HTTPException(status_code=404, detail="Usuario no encontrado")
         if not bcrypt.checkpw(password.encode('utf-8'), userFound.password.encode('utf-8')):
             print(userFound.password)
             raise HTTPException(status_code=401, detail="Credenciales incorrectas")
         token = generateToken(user, password)
-        response_data = UserMedicPersonalResponse(
+        response_data = UserResponse(
             username=userFound.username,
             role=userFound.role,
             groupIdGroup=userFound.groupIdGroup,

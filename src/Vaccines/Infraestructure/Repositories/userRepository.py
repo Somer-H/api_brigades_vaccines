@@ -1,10 +1,10 @@
-from ...Domain.Scheme.userScheme import UserMedicPersonalScheme, UserSchemeBase, UserMedicPersonalEditScheme, UserMedicPersonalResponse
+from ...Domain.Scheme.userScheme import UserScheme, UserSchemeBase, UserEditScheme, UserResponse
 from ..Models.userModel import User
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-def createUserMedicPersonalRepository(userMedicPersonal: UserSchemeBase, db: Session) -> UserMedicPersonalResponse:
+def createUserRepository(user: UserSchemeBase, db: Session) -> UserResponse:
     try:
-        userMedicPersonalToPost = User(**userMedicPersonal.dict())
+        userMedicPersonalToPost = User(**user.dict())
         db.add(userMedicPersonalToPost)
         db.commit()
         db.refresh(userMedicPersonalToPost)
@@ -12,13 +12,13 @@ def createUserMedicPersonalRepository(userMedicPersonal: UserSchemeBase, db: Ses
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalRepository(db: Session) -> list[UserMedicPersonalResponse]:
+def getUserRepository(db: Session) -> list[UserResponse]:
     try:
         userMedicPersonalList = db.query(User).all()
         return userMedicPersonalList
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalByIdRepository(id: int, db: Session) -> UserMedicPersonalResponse:
+def getUserByIdRepository(id: int, db: Session) -> UserResponse:
     try:
         userMedicPersonalToReturn = db.query(User).filter(User.idUserMedicPersonal == id).first()
         if not userMedicPersonalToReturn:
@@ -26,7 +26,7 @@ def getUserMedicPersonalByIdRepository(id: int, db: Session) -> UserMedicPersona
         return userMedicPersonalToReturn
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-def editUserMedicPersonalRepository(userMedicPersonalToEdit: UserMedicPersonalEditScheme, db: Session) -> UserMedicPersonalResponse:
+def editUserRepository(userMedicPersonalToEdit: UserEditScheme, db: Session) -> UserResponse:
     try:
         db.commit()
         db.refresh(userMedicPersonalToEdit)
@@ -34,7 +34,7 @@ def editUserMedicPersonalRepository(userMedicPersonalToEdit: UserMedicPersonalEd
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-def deleteUserMedicPersonalRepository(id: int, db: Session) -> bool:
+def deleteUserRepository(id: int, db: Session) -> bool:
     try:
         userMedicPersonalToDelete = db.query(User).filter(User.idUserMedicPersonal == id).first()
         if not userMedicPersonalToDelete:
@@ -45,7 +45,7 @@ def deleteUserMedicPersonalRepository(id: int, db: Session) -> bool:
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-def getUserMedicPersonalByUsernameRepository(username: str, db: Session) -> UserMedicPersonalScheme: 
+def getUserByUsernameRepository(username: str, db: Session) -> UserScheme: 
     try:
         userMedicPersonal = db.query(User).filter(User.username == username).first()
         return userMedicPersonal

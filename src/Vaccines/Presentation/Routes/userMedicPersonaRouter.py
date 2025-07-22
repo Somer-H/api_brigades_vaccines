@@ -1,11 +1,11 @@
-from ..Controllers.userController import createUserMedicPersonalController, getUserMedicPersonalController, getUserMedicPersonalByIdController, editUserMedicPersonalController, deleteUserMedicPersonalController, loginMedicPersonalController
+from ..Controllers.userController import createUserController, getUserController, getUserByIdController, editUserController, deleteUserController, loginController
 from fastapi import APIRouter
 
 router = APIRouter()
 
-router.post("/userMedicPersona") (createUserMedicPersonalController)
-router.get("/userMedicPersona") (getUserMedicPersonalController)
-router.get("/userMedicPersona/{id}") (getUserMedicPersonalByIdController)
-router.put("/userMedicPersona/{id}") (editUserMedicPersonalController)
-router.delete("/userMedicPersona/{id}") (deleteUserMedicPersonalController)
-router.post("/login/userMedicPersona") (loginMedicPersonalController)
+router.post("/userMedicPersona") (createUserController)
+router.get("/userMedicPersona") (getUserController)
+router.get("/userMedicPersona/{id}") (getUserByIdController)
+router.put("/userMedicPersona/{id}") (editUserController)
+router.delete("/userMedicPersona/{id}") (deleteUserController)
+router.post("/login/userMedicPersona") (loginController)
