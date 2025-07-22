@@ -1,12 +1,12 @@
 from ...Infraestructure.Repositories.userRepository import createUserMedicPersonalRepository, getUserMedicPersonalRepository, getUserMedicPersonalByIdRepository, editUserMedicPersonalRepository, deleteUserMedicPersonalRepository, getUserMedicPersonalByUsernameRepository
-from ...Domain.Scheme.userScheme import UserMedicPersonalScheme, UserMedicPersonalSchemeBase, UserMedicPersonalEditScheme, LoginMedicPersonal, UserMedicPersonalResponse
+from ...Domain.Scheme.userScheme import UserMedicPersonalScheme, UserSchemeBase, UserMedicPersonalEditScheme, LoginMedicPersonal, UserMedicPersonalResponse
 from fastapi import HTTPException, Depends
 from fastapi.responses import JSONResponse
 import bcrypt
 from ....Shared.MiddleWares.loginMiddlewWare import generateToken
 from ....Shared.mysql import get_db
 from sqlalchemy.orm import Session
-def createUserMedicPersonalService(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session) -> UserMedicPersonalResponse:
+def createUserMedicPersonalService(userMedicPersonal: UserSchemeBase, db: Session) -> UserMedicPersonalResponse:
     try:
         password = bcrypt.hashpw(userMedicPersonal.password.encode('utf-8'), bcrypt.gensalt())
         print(password)
