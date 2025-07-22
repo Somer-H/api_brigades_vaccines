@@ -2,7 +2,7 @@ from ....Shared.mysql import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 
 class User(Base):
-    __tablename__ = "UserMedicPersonal"
+    __tablename__ = "User"
 
     idUserMedicPersonal = Column(Integer, primary_key=True, nullable=True, autoincrement=True)
     username = Column(String(50), nullable=False)

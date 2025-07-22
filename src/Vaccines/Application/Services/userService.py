@@ -1,5 +1,5 @@
 from ...Infraestructure.Repositories.userRepository import createUserMedicPersonalRepository, getUserMedicPersonalRepository, getUserMedicPersonalByIdRepository, editUserMedicPersonalRepository, deleteUserMedicPersonalRepository, getUserMedicPersonalByUsernameRepository
-from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalScheme, UserMedicPersonalSchemeBase, UserMedicPersonalEditScheme, LoginMedicPersonal, UserMedicPersonalResponse
+from ...Domain.Scheme.userScheme import UserMedicPersonalScheme, UserMedicPersonalSchemeBase, UserMedicPersonalEditScheme, LoginMedicPersonal, UserMedicPersonalResponse
 from fastapi import HTTPException, Depends
 from fastapi.responses import JSONResponse
 import bcrypt

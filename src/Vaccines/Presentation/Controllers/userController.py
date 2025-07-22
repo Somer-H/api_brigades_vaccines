@@ -1,11 +1,11 @@
-from ...Application.Services.userMedicPersonalService import createUserMedicPersonalService, getUserMedicPersonalService, getUserMedicPersonalByIdService, editUserMedicPersonalService, deleteUserMedicPersonalService, loginMedicPersonalService
-from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalSchemeBase, UserMedicPersonalScheme, UserMedicPersonalEditScheme, LoginMedicPersonal
+from ...Application.Services.userService import createUserMedicPersonalService, getUserMedicPersonalService, getUserMedicPersonalByIdService, editUserMedicPersonalService, deleteUserMedicPersonalService, loginMedicPersonalService
+from ...Domain.Scheme.userScheme import UserSchemeBase, UserMedicPersonalScheme, UserMedicPersonalEditScheme, LoginMedicPersonal
 from sqlalchemy.orm import Session
 from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
 from ....Shared.auth import jwtAuth
 from ....Shared.mysql import get_db
-def createUserMedicPersonalController(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session = Depends(get_db)) -> UserMedicPersonalScheme:
+def createUserMedicPersonalController(userMedicPersonal: UserSchemeBase, db: Session = Depends(get_db)) -> UserMedicPersonalScheme:
     if not userMedicPersonal.name:
         raise HTTPException(status_code=400, detail="El nombre es obligatorio")
     if not userMedicPersonal.lastname:
