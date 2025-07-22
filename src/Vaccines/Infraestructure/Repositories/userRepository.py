@@ -1,10 +1,10 @@
 from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalScheme, UserMedicPersonalSchemeBase, UserMedicPersonalEditScheme, UserMedicPersonalResponse
-from ..Models.userMedicPersonalModel import UserMedicPersonalModel
+from ..Models.userModel import User
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 def createUserMedicPersonalRepository(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session) -> UserMedicPersonalResponse:
     try:
-        userMedicPersonalToPost = UserMedicPersonalModel(**userMedicPersonal.dict())
+        userMedicPersonalToPost = User(**userMedicPersonal.dict())
         db.add(userMedicPersonalToPost)
         db.commit()
         db.refresh(userMedicPersonalToPost)
@@ -14,13 +14,13 @@ def createUserMedicPersonalRepository(userMedicPersonal: UserMedicPersonalScheme
         raise HTTPException(status_code=500, detail=str(e))
 def getUserMedicPersonalRepository(db: Session) -> list[UserMedicPersonalResponse]:
     try:
-        userMedicPersonalList = db.query(UserMedicPersonalModel).all()
+        userMedicPersonalList = db.query(User).all()
         return userMedicPersonalList
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 def getUserMedicPersonalByIdRepository(id: int, db: Session) -> UserMedicPersonalResponse:
     try:
-        userMedicPersonalToReturn = db.query(UserMedicPersonalModel).filter(UserMedicPersonalModel.idUserMedicPersonal == id).first()
+        userMedicPersonalToReturn = db.query(User).filter(User.idUserMedicPersonal == id).first()
         if not userMedicPersonalToReturn:
             raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
         return userMedicPersonalToReturn
@@ -36,9 +36,9 @@ def editUserMedicPersonalRepository(userMedicPersonalToEdit: UserMedicPersonalEd
         raise HTTPException(status_code=500, detail=str(e))
 def deleteUserMedicPersonalRepository(id: int, db: Session) -> bool:
     try:
-        userMedicPersonalToDelete = db.query(UserMedicPersonalModel).filter(UserMedicPersonalModel.idUserMedicPersonal == id).first()
+        userMedicPersonalToDelete = db.query(User).filter(User.idUserMedicPersonal == id).first()
         if not userMedicPersonalToDelete:
-            return False  # No se encontró el usuario médico personal
+            return False  # No se encontró el usuario
         db.delete(userMedicPersonalToDelete)
         db.commit()
         return True
@@ -47,7 +47,7 @@ def deleteUserMedicPersonalRepository(id: int, db: Session) -> bool:
         raise HTTPException(status_code=500, detail=str(e))
 def getUserMedicPersonalByUsernameRepository(username: str, db: Session) -> UserMedicPersonalScheme: 
     try:
-        userMedicPersonal = db.query(UserMedicPersonalModel).filter(UserMedicPersonalModel.username == username).first()
+        userMedicPersonal = db.query(User).filter(User.username == username).first()
         return userMedicPersonal
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
