@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class UserMedicPersonalSchemeBase(BaseModel):
+class UserSchemeBase(BaseModel):
     username: str
     password: str
     role: str
@@ -10,7 +10,7 @@ class UserMedicPersonalSchemeBase(BaseModel):
     lastname: str
     class Config:
         orm_mode = True
-class UserMedicPersonalScheme(UserMedicPersonalSchemeBase):
+class UserMedicPersonalScheme(UserSchemeBase):
     idUserMedicPersonal: int
 
     class Config:

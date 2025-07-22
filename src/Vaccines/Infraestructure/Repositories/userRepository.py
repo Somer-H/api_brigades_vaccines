@@ -1,8 +1,8 @@
-from ...Domain.Scheme.userMedicPersonalScheme import UserMedicPersonalScheme, UserMedicPersonalSchemeBase, UserMedicPersonalEditScheme, UserMedicPersonalResponse
+from ...Domain.Scheme.userScheme import UserMedicPersonalScheme, UserSchemeBase, UserMedicPersonalEditScheme, UserMedicPersonalResponse
 from ..Models.userModel import User
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-def createUserMedicPersonalRepository(userMedicPersonal: UserMedicPersonalSchemeBase, db: Session) -> UserMedicPersonalResponse:
+def createUserMedicPersonalRepository(userMedicPersonal: UserSchemeBase, db: Session) -> UserMedicPersonalResponse:
     try:
         userMedicPersonalToPost = User(**userMedicPersonal.dict())
         db.add(userMedicPersonalToPost)
