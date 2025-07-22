@@ -20,7 +20,7 @@ def getVaccinesService (db: Session) -> list[VaccineScheme]:
         raise HTTPException(status_code=500, detail=str(e))
 def getVaccineByIdService (id: int, db: Session) -> VaccineScheme: 
     try: 
-        vaccine = getVaccineByIdService(id, db)
+        vaccine = getVaccineByIdRepository(id, db)
         if not vaccine: 
             raise HTTPException(status_code=400, detail="No se ha encontrado la vacuna")
         return vaccine
@@ -28,7 +28,7 @@ def getVaccineByIdService (id: int, db: Session) -> VaccineScheme:
         raise HTTPException(status_code=500, detail=str(e))
 def editVaccineService(id: int, vaccineToEdit: VaccineEditScheme, db: Session) -> VaccineScheme: 
     try:
-        vaccineToEditNew = getVaccineByIdService(id)
+        vaccineToEditNew = getVaccineByIdService(id, db)
         if not vaccineToEditNew: 
             raise HTTPException(status_code=500, detail="No se ha encontrado la vacuna")
         if vaccineToEdit.nameVaccine: 
