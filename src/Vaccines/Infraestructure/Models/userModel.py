@@ -1,7 +1,7 @@
 from ....Shared.mysql import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 
-class UserMedicPersonalModel(Base):
+class User(Base):
     __tablename__ = "UserMedicPersonal"
 
     idUserMedicPersonal = Column(Integer, primary_key=True, nullable=True, autoincrement=True)

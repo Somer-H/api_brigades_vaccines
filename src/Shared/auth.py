@@ -4,9 +4,9 @@ from ..Shared.MiddleWares.loginMiddlewWare import validateToken
 
 security = HTTPBearer()
 
-def jwtAuth(credentials: HTTPAuthorizationCredentials = Depends(security)):
+def _jwtAuth(credentials: HTTPAuthorizationCredentials = Depends(security), expectedRoles: list = None):
     token = credentials.credentials
-    is_valid, result = validateToken(token)
+    is_valid, result = validateToken(token, expectedRoles)
     if not is_valid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -14,3 +14,8 @@ def jwtAuth(credentials: HTTPAuthorizationCredentials = Depends(security)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     return result
+
+def jwtAuth(expectedRoles: list = None):
+    def wrapper(credentials: HTTPAuthorizationCredentials = Depends(security)):
+        return _jwtAuth(credentials, expectedRoles=expectedRoles)
+    return Depends(wrapper)

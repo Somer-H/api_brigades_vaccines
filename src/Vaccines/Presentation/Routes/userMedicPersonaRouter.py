@@ -1,4 +1,4 @@
-from ..Controllers.userMedicPersonalController import createUserMedicPersonalController, getUserMedicPersonalController, getUserMedicPersonalByIdController, editUserMedicPersonalController, deleteUserMedicPersonalController, loginMedicPersonalController
+from ..Controllers.userController import createUserMedicPersonalController, getUserMedicPersonalController, getUserMedicPersonalByIdController, editUserMedicPersonalController, deleteUserMedicPersonalController, loginMedicPersonalController
 from fastapi import APIRouter
 
 router = APIRouter()

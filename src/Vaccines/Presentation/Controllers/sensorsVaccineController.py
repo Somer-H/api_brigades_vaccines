@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from ...Domain.Scheme.sensorsVaccine import SensorsVaccineBase, SensorsVaccine
 from ...Application.Services.sensorsVaccine import createSensorsVaccineService, getSensorsVaccineService
 from ....Shared.mysql import get_db
-def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Session = Depends(get_db)) -> SensorsVaccine:
+from ....Shared.auth import jwtAuth
+def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Session = Depends(get_db), expectedRoles: jwtAuth=("IoT")) -> SensorsVaccine:
     if not sensorsVaccine.nameSensor:
         raise HTTPException(status_code=400, detail="Se requiere un nombre para el sensor")
     if not sensorsVaccine.measurementUnit: 
