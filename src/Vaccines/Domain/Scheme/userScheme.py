@@ -10,12 +10,12 @@ class UserSchemeBase(BaseModel):
     lastname: str
     class Config:
         orm_mode = True
-class UserMedicPersonalScheme(UserSchemeBase):
+class UserScheme(UserSchemeBase):
     idUserMedicPersonal: int
 
     class Config:
         orm_mode = True
-class UserMedicPersonalEditScheme(BaseModel):
+class UserEditScheme(BaseModel):
     username: Optional[str] = None
     password: Optional[str] = None
     role: Optional[str] = None
@@ -25,13 +25,13 @@ class UserMedicPersonalEditScheme(BaseModel):
 
     class Config:
         orm_mode = True
-class LoginMedicPersonal(BaseModel): 
+class Login(BaseModel): 
     username: str
     password: str
 
     class Config: 
         orm_mode = True
-class UserMedicPersonalResponse(BaseModel): 
+class UserResponse(BaseModel): 
     username: str
     role: str
     groupIdGroup: int
