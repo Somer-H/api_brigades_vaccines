@@ -16,8 +16,8 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"]
 )
+app.include_router(User, prefix="/api", tags=["Users"])
 app.include_router(VaccineBoxRouter, prefix="/api", tags=["VaccineBoxes"])
 app.include_router(SensorsVaccineRouter, prefix="/api", tags=["SensorsVaccine"])
 app.include_router(GroupsRouter, prefix="/api", tags=["Groups"])
-app.include_router(User, prefix="/api", tags=["Users"])
 app.include_router(VaccineRouter, prefix="/api", tags=["Vaccines"])
