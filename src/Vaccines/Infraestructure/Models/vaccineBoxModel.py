@@ -4,9 +4,9 @@ from ....Shared.mysql import Base
 class VaccineBoxModel(Base):
     __tablename__ = "VaccineBox"
     
-    idVaccineBox = Column(Integer, primary_key=True, nullable=True, autoincrement=True)
+    idVaccineBox = Column(Integer, primary_key=True, nullable=True, autoincrement=False)
     amountVaccines = Column(Integer, nullable=False)
-class VaccineBoxVaccine(Base): 
+class VaccineBoxVaccineModel(Base): 
     __tablename__ = "VaccineBoxVaccine"
-    idVaccineBox = Column(Integer, ForeignKey("VaccineBox.idVaccineBox"),primary_key=True, nullable=True)
-    
+    idVaccineBox = Column(Integer, ForeignKey("VaccineBox.idVaccineBox"),primary_key=True, nullable=False)
+    idVaccines = Column(Integer, ForeignKey("Vaccine.idVaccines"), primary_key=True, nullable = False)

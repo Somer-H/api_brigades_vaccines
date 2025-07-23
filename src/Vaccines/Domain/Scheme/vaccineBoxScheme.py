@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class VaccineBoxBase(BaseModel):
   amountVaccines : int
@@ -14,3 +14,11 @@ class EditVaccineBox(BaseModel):
 
     class Config:
         orm_mode = True
+
+class VaccineBoxVaccinesScheme(BaseModel): 
+    idVaccineBox : int
+    idVaccines: List[int]
+
+class VaccineBoxVaccineScheme(BaseModel): 
+    idVaccineBox: int
+    idVaccines: int
