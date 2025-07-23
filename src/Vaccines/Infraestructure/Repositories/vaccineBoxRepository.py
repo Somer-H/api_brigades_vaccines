@@ -1,7 +1,8 @@
-from ...Infraestructure.Models.vaccineBoxModel import VaccineBoxModel
-from ...Domain.Scheme.vaccineBoxScheme import VaccineBox, EditVaccineBox, VaccineBoxBase
+from ...Infraestructure.Models.vaccineBoxModel import VaccineBoxModel, VaccineBoxVaccineModel
+from ...Domain.Scheme.vaccineBoxScheme import VaccineBox, EditVaccineBox, VaccineBoxBase, VaccineBoxVaccineScheme
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+
 def createVaccineBoxRepository(vaccineBox: VaccineBoxBase, db: Session) -> VaccineBox:
     try:
         vaccineToPost = VaccineBoxModel(**vaccineBox.dict())
@@ -12,7 +13,17 @@ def createVaccineBoxRepository(vaccineBox: VaccineBoxBase, db: Session) -> Vacci
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+def createVaccineBoxVaccinesRepository(vaccineBoxVaccine: VaccineBoxVaccineScheme, db: Session) -> VaccineBoxVaccineScheme: 
+    try: 
+        vaccineBoxVaccineToPost = VaccineBoxVaccineModel(**vaccineBoxVaccine.dict())
+        db.add(vaccineBoxVaccineToPost)
+        db.commit()
+        db.refresh(vaccineBoxVaccineToPost)
+        return vaccineBoxVaccineToPost
+    except Exception as e: 
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 def getVaccineBoxRepository(db: Session) -> VaccineBox:
     try:
         vaccineBoxToReturn = db.query(VaccineBoxModel).all()

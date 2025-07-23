@@ -1,12 +1,30 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from ...Domain.Scheme.vaccineBoxScheme import VaccineBox, EditVaccineBox, VaccineBoxBase
-from ...Infraestructure.Repositories.vaccineBoxRepository import createVaccineBoxRepository, getVaccineBoxRepository, editVaccineBoxRepository, deleteVaccineBoxRepository, getVaccineBoxByIdRepository
+from ...Domain.Scheme.vaccineBoxScheme import VaccineBox, EditVaccineBox, VaccineBoxBase, VaccineBoxVaccinesScheme, VaccineBoxVaccineScheme
+from ...Infraestructure.Repositories.vaccineBoxRepository import createVaccineBoxRepository, getVaccineBoxRepository, editVaccineBoxRepository, deleteVaccineBoxRepository, getVaccineBoxByIdRepository, createVaccineBoxVaccinesRepository
 
 def createVaccineBoxService(vaccine: VaccineBoxBase, db: Session) -> VaccineBox:
     try:
         createVaccineBox = createVaccineBoxRepository(vaccine, db)
         return createVaccineBox
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+def createVaccineBoxVaccineService(vaccineBoxVaccine: VaccineBoxVaccinesScheme, db: Session) -> VaccineBoxVaccinesScheme: 
+    try:
+        boxWithVaccines : list[int] = []
+        for vaccine in vaccineBoxVaccine.idVaccines:
+            vaccineBoxVaccineToPost = VaccineBoxVaccineScheme(
+                idVaccineBox=vaccineBoxVaccine.idVaccineBox, 
+                idVaccines = vaccine
+            )
+            createVaccineBoxVaccinesRepository(vaccineBoxVaccineToPost, db)
+            boxWithVaccines.append(vaccine)
+        vaccineBoxAndVaccineList = VaccineBoxVaccinesScheme (
+            idVaccineBox=vaccineBoxVaccine.idVaccineBox,
+            idVaccines=boxWithVaccines
+        )
+        return vaccineBoxAndVaccineList
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 def getVaccineBoxService(db: Session) -> list[VaccineBox]:
