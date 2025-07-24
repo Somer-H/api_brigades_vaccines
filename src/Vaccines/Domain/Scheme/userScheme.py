@@ -31,7 +31,8 @@ class Login(BaseModel):
 
     class Config: 
         orm_mode = True
-class UserResponse(BaseModel): 
+class UserResponse(BaseModel):
+    idUser: int
     username: str
     role: str
     groupIdGroup: int

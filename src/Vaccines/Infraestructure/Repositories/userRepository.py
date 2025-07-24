@@ -20,7 +20,7 @@ def getUserRepository(db: Session) -> list[UserResponse]:
         raise HTTPException(status_code=500, detail=str(e))
 def getUserByIdRepository(id: int, db: Session) -> UserResponse:
     try:
-        userMedicPersonalToReturn = db.query(User).filter(User.idUserMedicPersonal == id).first()
+        userMedicPersonalToReturn = db.query(User).filter(User.idUser == id).first()
         if not userMedicPersonalToReturn:
             raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
         return userMedicPersonalToReturn
@@ -36,7 +36,7 @@ def editUserRepository(userMedicPersonalToEdit: UserEditScheme, db: Session) -> 
         raise HTTPException(status_code=500, detail=str(e))
 def deleteUserRepository(id: int, db: Session) -> bool:
     try:
-        userMedicPersonalToDelete = db.query(User).filter(User.idUserMedicPersonal == id).first()
+        userMedicPersonalToDelete = db.query(User).filter(User.idUser == id).first()
         if not userMedicPersonalToDelete:
             return False  # No se encontró el usuario
         db.delete(userMedicPersonalToDelete)
@@ -45,7 +45,7 @@ def deleteUserRepository(id: int, db: Session) -> bool:
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-def getUserByUsernameRepository(username: str, db: Session) -> UserScheme: 
+def getUserByUsernameRepository(username: str, db: Session) -> UserResponse: 
     try:
         userMedicPersonal = db.query(User).filter(User.username == username).first()
         return userMedicPersonal
