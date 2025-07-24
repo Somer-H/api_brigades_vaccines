@@ -84,6 +84,7 @@ def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSO
             raise HTTPException(status_code=401, detail="Credenciales incorrectas")
         token = generateToken(user, userFound.role)
         response_data = UserResponse(
+            idUser=userFound.idUser,
             username=userFound.username,
             role=userFound.role,
             groupIdGroup=userFound.groupIdGroup,
