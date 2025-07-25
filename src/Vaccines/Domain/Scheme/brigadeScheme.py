@@ -38,3 +38,13 @@ class BrigateUpdateScheme(BaseModel):
     endDate: Optional[datetime] = None
     class Config: 
         orm_mode = True
+
+class BrigadeAndLocationsScheme(BaseModel):
+    idBrigade: int
+    referenceBrigade: str
+    startDate: datetime
+    endDate: datetime
+    idLocation: int
+    location: str
+    class Config: 
+        orm_mode = True

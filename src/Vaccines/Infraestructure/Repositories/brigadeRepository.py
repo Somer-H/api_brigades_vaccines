@@ -1,5 +1,5 @@
 from ...Infraestructure.Models.brigadeModel import BrigadeModel, LocationModel
-from ...Domain.Scheme.brigadeScheme import BrigateScheme, BrigateResponseScheme, LocationScheme, LocationSchemeBase
+from ...Domain.Scheme.brigadeScheme import BrigateScheme, BrigateResponseScheme, LocationScheme, LocationSchemeBase, BrigadeAndLocationsScheme
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 def createBrigadeRepository(brigate: BrigateScheme, db: Session) -> BrigateResponseScheme: 
@@ -22,4 +22,12 @@ def createLocationRepository(location: LocationSchemeBase, db: Session) -> Locat
         return locationPost
     except Exception as e:
         db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+def getBrigadesRepository(db: Session) -> list[BrigadeAndLocationsScheme]: 
+    try: 
+        brigades = db.query(BrigadeModel.idBrigade, BrigadeModel.referenceBrigade, BrigadeModel.startDate, BrigadeModel.endDate, LocationModel.idLocation, LocationModel.location).join(LocationModel, BrigadeModel.idBrigade == LocationModel.idBrigade).all()
+        return brigades
+    except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
