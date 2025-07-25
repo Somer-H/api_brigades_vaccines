@@ -6,6 +6,7 @@ from src.Vaccines.Presentation.Routes.sensorsVaccine import router as SensorsVac
 from src.Vaccines.Presentation.Routes.userRouter import router as User
 from src.Vaccines.Presentation.Routes.groupRoutes import router as GroupsRouter
 from src.Vaccines.Presentation.Routes.vaccineRoutes import router as VaccineRouter
+from src.Vaccines.Presentation.Routes.brigadeRoutes import router as BrigadeRouter
 security = HTTPBearer()
 app = FastAPI()
 app.add_middleware(
@@ -21,3 +22,4 @@ app.include_router(VaccineBoxRouter, prefix="/api", tags=["VaccineBoxes"])
 app.include_router(SensorsVaccineRouter, prefix="/api", tags=["SensorsVaccine"])
 app.include_router(GroupsRouter, prefix="/api", tags=["Groups"])
 app.include_router(VaccineRouter, prefix="/api", tags=["Vaccines"])
+app.include_router(BrigadeRouter, prefix="/api", tags=["Brigades"])
