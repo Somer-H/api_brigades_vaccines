@@ -28,11 +28,11 @@ class BrigateScheme(BaseModel):
     endDate: datetime
     class Config: 
         orm_mode = True
-class BrigateResponseScheme(BrigateScheme): 
+class BrigadeFullScheme(BrigateScheme): 
     idBrigade: int
     class Config: 
         orm_mode = True
-class BrigateUpdateScheme(BaseModel): 
+class BrigadeUpdateScheme(BaseModel): 
     referenceBrigade: Optional[str] = None
     startDate: Optional[datetime] = None
     endDate: Optional[datetime] = None
