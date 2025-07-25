@@ -1,4 +1,4 @@
-from ...Infraestructure.Repositories.userRepository import createUserRepository, getUserRepository, getUserByIdRepository, editUserRepository, deleteUserRepository, getUserByUsernameRepository
+from ...Infraestructure.Repositories.userRepository import createUserRepository, getUserRepository, getUserByIdRepository, editUserRepository, deleteUserRepository, getUserByUsernameRepository, getLeaderAndNurseRepository
 from ...Domain.Scheme.userScheme import UserScheme, UserSchemeBase, UserEditScheme, UserResponse
 from fastapi import HTTPException, Depends
 from fastapi.responses import JSONResponse
@@ -23,6 +23,14 @@ def getUserService(db: Session) -> list[UserResponse]:
             raise HTTPException(status_code=404, detail="No se encontraron Usuarios médicos personales")
         return userMedicPersonalList
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+def getLeadersAndNurseService(db: Session) -> list[UserResponse]: 
+    try: 
+        userMedic = getLeaderAndNurseRepository(db)
+        if not userMedic: 
+            raise HTTPException(status_code=400, detail="No se ha encontrado nada")
+        return userMedic
+    except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
 def getUserByUsernameService(username: str, db: Session) -> UserScheme:
     try: 
