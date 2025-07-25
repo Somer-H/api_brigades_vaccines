@@ -18,6 +18,14 @@ def getUserRepository(db: Session) -> list[UserResponse]:
         return userMedicPersonalList
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+def getLeaderAndNurse(db: Session) -> list[UserResponse]:
+    try: 
+        usersMedic = db.query(User).filter(User.role=="lider").filter(User.role=="enfermero").all()
+        return usersMedic
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+
 def getUserByIdRepository(id: int, db: Session) -> UserResponse:
     try:
         userMedicPersonalToReturn = db.query(User).filter(User.idUser == id).first()
