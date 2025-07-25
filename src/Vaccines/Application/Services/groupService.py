@@ -26,8 +26,6 @@ def getGroupByIdService(id: int, db: Session) -> GroupScheme:
 def editGroupService(id: int, groupToEdit: GroupScheme, db: Session) -> GroupScheme:
     try: 
         groupToEditNew = getGroupByIdRepository(id, db)
-        if not groupToEditNew:
-            raise HTTPException(status_code=404, detail="No se encontró el Grupo")
         if groupToEdit.nameGroup is not None:
             groupToEditNew.nameGroup = groupToEdit.nameGroup
         if groupToEdit.dateGroup is not None:
