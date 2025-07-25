@@ -2,6 +2,7 @@ from ...Domain.Scheme.userScheme import UserScheme, UserSchemeBase, UserEditSche
 from ..Models.userModel import User
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
+from sqlalchemy import or_
 def createUserRepository(user: UserSchemeBase, db: Session) -> UserResponse:
     try:
         userMedicPersonalToPost = User(**user.dict())
@@ -19,9 +20,9 @@ def getUserRepository(db: Session) -> list[UserResponse]:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-def getLeaderAndNurse(db: Session) -> list[UserResponse]:
+def getLeaderAndNurseRepository(db: Session) -> list[UserResponse]:
     try: 
-        usersMedic = db.query(User).filter(User.role=="lider").filter(User.role=="enfermero").all()
+        usersMedic = db.query(User).filter(or_(User.role == "lider", User.role == "enfermero")).all()
         return usersMedic
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
