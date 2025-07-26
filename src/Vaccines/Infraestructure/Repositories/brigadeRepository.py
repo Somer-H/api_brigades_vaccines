@@ -45,6 +45,12 @@ def getBrigadeByIdRepository(id: int, db: Session) -> BrigadeFullScheme:
         return brigade
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
+def getLocationByIdRepository(id: int, db: Session) -> LocationScheme:
+    try: 
+        location = db.query(LocationModel).filter(LocationModel.idLocation == id).first()
+        return location
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
 def editBrigadeRepository(brigade: BrigadeFullScheme, db: Session) -> BrigadeFullScheme: 
     try: 
         db.commit()
@@ -53,3 +59,37 @@ def editBrigadeRepository(brigade: BrigadeFullScheme, db: Session) -> BrigadeFul
     except Exception as e: 
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+def editLocationRepository(location: LocationScheme, db: Session) -> LocationScheme: 
+    try: 
+        db.commit()
+        db.refresh(location)
+        return location
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+
+def deleteBrigadeRepository(id: int, db: Session) -> bool: 
+    try:
+        brigadeToDelete = db.query(BrigadeModel).filter(BrigadeModel.idBrigade == id).first()
+        if not brigadeToDelete:
+            # No la encontró
+            return False
+        db.delete(brigadeToDelete)
+        db.commit()
+        return True
+    except Exception as e:
+        db.rollback()
+        raise e
+
+def deleteLocationRepository(id: int, db: Session) -> bool: 
+    try: 
+        locationToDelete = db.query(LocationModel).filter(LocationModel.idLocation).first()
+        if not locationToDelete: 
+            #No la encontró
+            return False
+        db.delete(locationToDelete)
+        db.commit()
+        return True
+    except Exception as e: 
+        db.rollback()
+        raise e

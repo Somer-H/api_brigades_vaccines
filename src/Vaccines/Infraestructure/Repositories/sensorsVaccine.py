@@ -19,3 +19,10 @@ def getSensorsVaccineRepository(db: Session) -> list[SensorsVaccine]:
         return sensorsVaccineList
     except Exception as e:
         raise e
+
+def getTemperatureSensorRepository(db: Session) -> list[SensorsVaccine]: 
+    try: 
+        sensorsVaccineList = db.query(SensorsVaccineModel).filter(SensorsVaccineModel.nameSensor == "temperature").all()
+        return sensorsVaccineList
+    except Exception as e: 
+        raise e

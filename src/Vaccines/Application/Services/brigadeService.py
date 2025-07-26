@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from ...Domain.Scheme.brigadeScheme import BrigateRequestScheme, BrigateScheme, BrigateResponseWithLocationsScheme, LocationSchemeBase, BrigadeAndLocationsScheme, BrigadeUpdateScheme, BrigadeFullScheme
-from ...Infraestructure.Repositories.brigadeRepository import createBrigadeRepository, createLocationRepository, getBrigadesRepository, getBrigadeWithLocationsByIdRepository, editBrigadeRepository, getBrigadeByIdRepository
+from ...Domain.Scheme.brigadeScheme import BrigateRequestScheme, BrigateScheme, BrigateResponseWithLocationsScheme, LocationSchemeBase, BrigadeAndLocationsScheme, BrigadeUpdateScheme, BrigadeFullScheme, LocationScheme
+from ...Infraestructure.Repositories.brigadeRepository import createBrigadeRepository, createLocationRepository, getBrigadesRepository, getBrigadeWithLocationsByIdRepository, editBrigadeRepository, getBrigadeByIdRepository, getLocationByIdRepository, editLocationRepository, deleteBrigadeRepository, deleteLocationRepository
 
 def createBrigadeService(brigade: BrigateRequestScheme, db: Session) -> BrigateResponseWithLocationsScheme:
     try: 
@@ -57,6 +57,15 @@ def getBrigadeByIdService(id: int, db: Session) -> BrigadeFullScheme:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+def getLocationByIdService(id: int, db: Session) -> LocationScheme: 
+    try: 
+        location = getLocationByIdRepository(id, db)
+        if not location: 
+            raise HTTPException(status_code=400, detail="No se encontró la localización")
+        return location
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+    
 def editBrigadeService(id: int, brigade : BrigadeUpdateScheme, db: Session) -> BrigadeFullScheme: 
     try:
         brigadeToUpdate = getBrigadeByIdService(id, db)
@@ -73,3 +82,33 @@ def editBrigadeService(id: int, brigade : BrigadeUpdateScheme, db: Session) -> B
             raise HTTPException(status_code=400, detail="Vaya, ha ocurrido un error, intente de nuevo más tarde")
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
+
+def editLocationService(id: int, location: LocationSchemeBase, db: Session) -> LocationScheme: 
+    try: 
+        locationToEdit = getLocationByIdService(id, db)
+        if location.location is not None: 
+            locationToEdit.location = location.location
+        updatadedLocation = editLocationRepository(locationToEdit, db)
+        if updatadedLocation: 
+            return updatadedLocation
+        else: 
+            raise HTTPException(status_code=400, detail="Ocurrió un error, por favor intentelo más tarde")
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+
+def deleteBrigadeService(id: int, db: Session) -> str: 
+    try: 
+        if deleteBrigadeRepository(id, db) == False:
+            raise HTTPException(status_code=500, detail="No se ha encontrado la brigada")
+        return "Eliminado con éxito"
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+
+def deleteLocationService(id: int, db: Session) -> str: 
+    try: 
+        if deleteLocationRepository(id, db) == False:
+            raise HTTPException(status_code=500, detail="No se ha encontrado la localización")
+        return "Eliminado con éxito"
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+    
