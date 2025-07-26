@@ -1,5 +1,5 @@
-from ...Application.Services.brigadeService import createBrigadeService, getBrigadesService, getBrigadeWithLocationsByIdService, editBrigadeService
-from ...Domain.Scheme.brigadeScheme import BrigateRequestScheme, BrigateResponseWithLocationsScheme, BrigadeAndLocationsScheme, BrigadeUpdateScheme, BrigadeFullScheme
+from ...Application.Services.brigadeService import createBrigadeService, getBrigadesService, getBrigadeWithLocationsByIdService, editBrigadeService, editLocationService, deleteBrigadeService, deleteLocationService
+from ...Domain.Scheme.brigadeScheme import BrigateRequestScheme, BrigateResponseWithLocationsScheme, BrigadeAndLocationsScheme, BrigadeUpdateScheme, BrigadeFullScheme, LocationUpdateScheme, LocationScheme
 from fastapi import Depends, HTTPException
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
@@ -30,3 +30,24 @@ def editBrigadeController(id: int, brigade: BrigadeUpdateScheme, db: Session = D
     if id <= 0: 
         raise HTTPException(status_code=400, detail="La ID no debe ser igual o menor que 0")
     return editBrigadeService(id, brigade, db)
+
+def editLocationController(id: int, location: LocationUpdateScheme, db: Session = Depends(get_db)) -> LocationScheme: 
+    if not id:
+        raise HTTPException(status_code=400, detail="Debe ingresar un ID")
+    if id <= 0: 
+        raise HTTPException(status_code=400, detail="La ID no puede ser menor o igual que 0")
+    return editLocationService(id, location, db)
+
+def deleteBrigadeController(id: int, db: Session = Depends(get_db)) -> str:
+    if not id: 
+        raise HTTPException(status_code=400, detail="Debe ingresar")
+    if id <= 0: 
+        raise HTTPException(status_code=400, detail="La ID no puede ser igual o menor que 0")
+    return deleteBrigadeService(id, db)
+
+def deleteLocationController(id: int, db: Session = Depends(get_db)) -> str: 
+    if not id: 
+        raise HTTPException(status_code=400, detail="Debe ingresar una ID")
+    if id <= 0: 
+        raise HTTPException(status_code=400, detail="La ID no debe ser menor o igual a 0")
+    return deleteLocationService(id, db)

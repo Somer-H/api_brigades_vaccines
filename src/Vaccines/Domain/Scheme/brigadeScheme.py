@@ -19,6 +19,8 @@ class BrigateRequestScheme(BaseModel):
     class Config: 
         orm_mode = True
 
+class LocationUpdateScheme(BaseModel): 
+    location: Optional[str]
 class BrigateResponseWithLocationsScheme(BrigateRequestScheme): 
     idBrigade: int
 
