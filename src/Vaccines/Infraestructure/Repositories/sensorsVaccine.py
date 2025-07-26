@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from ...Infraestructure.Models.sensorsVaccineModel import SensorsVaccineModel
 from ...Domain.Scheme.sensorsVaccine import SensorsVaccine, SensorsVaccineBase
+from fastapi import HTTPException
 
 def createSensorsVaccineRepository(sensorsVaccine: SensorsVaccineBase, db: Session) -> SensorsVaccine:
     try:
@@ -11,18 +12,18 @@ def createSensorsVaccineRepository(sensorsVaccine: SensorsVaccineBase, db: Sessi
         return sensorsVaccineToPost
     except Exception as e:
         db.rollback()
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 
 def getSensorsVaccineRepository(db: Session) -> list[SensorsVaccine]:
     try:
         sensorsVaccineList = db.query(SensorsVaccineModel).all()
         return sensorsVaccineList
     except Exception as e:
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 
 def getTemperatureSensorRepository(db: Session) -> list[SensorsVaccine]: 
     try: 
         sensorsVaccineList = db.query(SensorsVaccineModel).filter(SensorsVaccineModel.nameSensor == "temperature").all()
         return sensorsVaccineList
     except Exception as e: 
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))

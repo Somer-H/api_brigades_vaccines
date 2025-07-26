@@ -111,4 +111,3 @@ def deleteLocationService(id: int, db: Session) -> str:
         return "Eliminado con éxito"
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
-    
