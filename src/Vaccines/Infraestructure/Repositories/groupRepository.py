@@ -1,7 +1,7 @@
 from ...Infraestructure.Models.groupModel import GroupModel
 from ...Domain.Scheme.groupScheme import GroupSchemeBase, GroupScheme
 from sqlalchemy.orm import Session
-
+from fastapi import HTTPException
 def createGroupRepository(group: GroupSchemeBase, db: Session) -> GroupScheme:
     try:
         groupToPost = GroupModel(**group.dict())
@@ -11,19 +11,19 @@ def createGroupRepository(group: GroupSchemeBase, db: Session) -> GroupScheme:
         return groupToPost
     except Exception as e:
         db.rollback()
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 def getGroupRepository(db: Session) -> list[GroupScheme]:
     try:
         groupList = db.query(GroupModel).all()
         return groupList
     except Exception as e:
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 def getGroupByIdRepository(id: int, db: Session) -> GroupScheme:
     try:
         groupToReturn = db.query(GroupModel).filter(GroupModel.idGroup == id).first()
         return groupToReturn
     except Exception as e:
-        raise e
+        raise HTTPException(status_code=400, detail=str(e))
 def editGroupRepository(groupToEdit: GroupScheme, db: Session) -> GroupScheme:
     try: 
         db.commit()
@@ -31,7 +31,7 @@ def editGroupRepository(groupToEdit: GroupScheme, db: Session) -> GroupScheme:
         return groupToEdit
     except Exception as e:
         db.rollback()
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
 def deleteGroupRepository(id: int, db: Session) -> bool | None:
     try:
         groupToDelete = db.query(GroupModel).filter(GroupModel.idGroup == id).first()
@@ -43,4 +43,4 @@ def deleteGroupRepository(id: int, db: Session) -> bool | None:
         return True
     except Exception as e:
         db.rollback()
-        raise e
+        raise HTTPException(status_code=500, detail=str(e))
