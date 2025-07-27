@@ -11,3 +11,5 @@ class User(Base):
     groupIdGroup = Column(Integer, ForeignKey("Group.idGroup"), nullable=True)
     name = Column(String(50), nullable=False)
     lastname = Column(String(50), nullable=False)
+    idHospital = Column(String, nullable=True)
+    idUserCivil = Column(String, nullable=True)
