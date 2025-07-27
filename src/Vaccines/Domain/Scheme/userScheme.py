@@ -8,6 +8,8 @@ class UserSchemeBase(BaseModel):
     groupIdGroup: Optional[int] = None
     name: str
     lastname: str
+    idHospital: Optional[int] = None
+    idUserCivil: Optional[str] = None
     class Config:
         orm_mode = True
 class UserScheme(UserSchemeBase):
@@ -22,7 +24,8 @@ class UserEditScheme(BaseModel):
     groupIdGroup: Optional[int] = None
     name: Optional[str] = None
     lastname: Optional[str] = None
-
+    idHospital: Optional[int] = None
+    idUserCivil : Optional[str] = None
     class Config:
         orm_mode = True
 class Login(BaseModel): 
@@ -38,5 +41,7 @@ class UserResponse(BaseModel):
     groupIdGroup: int
     name: str 
     lastname: str
+    idHospital: Optional[int] = None
+    idUserCivil: Optional[str] = None
     class Config:
         orm_mode: True
