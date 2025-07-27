@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
-from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme
-from ...Application.Services.vaccineService import createVaccineService, editVaccineService, deleteVaccineService, getVaccinesService, getVaccineByIdService
+from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme, VaccineVaccineBoxScheme
+from ...Application.Services.vaccineService import createVaccineService, editVaccineService, deleteVaccineService, getVaccinesService, getVaccineByIdService, getVaccineVaccineBoxService
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
 
@@ -12,7 +12,6 @@ def createVaccineController (vaccine: VaccineBaseScheme, db: Session = Depends(g
 
 def getVaccinesController (db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> list[VaccineScheme]: 
     return getVaccinesService(db)
-
 def getVaccineByIdController (id: int, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> VaccineScheme: 
     if not id: 
         raise HTTPException(status_code=400,detail="Debe ingresar una ID")
@@ -20,6 +19,8 @@ def getVaccineByIdController (id: int, db: Session = Depends(get_db), userData =
         raise HTTPException(status_code=400, detail="La ID no debe ser menor a 0")
     return getVaccineByIdService(id, db)
 
+def getVaccineVaccineBoxController (db: Session = Depends(get_db)) -> VaccineVaccineBoxScheme: 
+    return getVaccineVaccineBoxService(db)
 def editVaccineController (id: int, vaccine: VaccineEditScheme, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> VaccineScheme: 
     if not id: 
         raise HTTPException(status_code=400, detail="Debe ingresar una ID")

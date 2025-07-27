@@ -15,3 +15,12 @@ class VaccineEditScheme(BaseModel):
 
     class Config:
         orm_mode = True
+
+class VaccineVaccineBoxScheme(BaseModel):
+    idVaccines: int
+    nameVaccine: str
+    batch: int 
+    availableDoses: int 
+    
+    class Config:
+        from_attributes = True

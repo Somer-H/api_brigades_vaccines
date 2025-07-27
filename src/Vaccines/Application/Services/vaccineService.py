@@ -1,6 +1,6 @@
-from ...Infraestructure.Repositories.vaccineRepository import createVaccineRepository, getVaccineByIdRepository, getVaccinesRepository, deleteVaccineRepository, editVaccineRepository
+from ...Infraestructure.Repositories.vaccineRepository import createVaccineRepository, getVaccineByIdRepository, getVaccinesRepository, deleteVaccineRepository, editVaccineRepository, getVaccinesWithVaccinesBoxRepository
 from fastapi import HTTPException
-from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme
+from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme, VaccineVaccineBoxScheme
 from sqlalchemy.orm import Session
 
 def createVaccineService (vaccine: VaccineBaseScheme, db: Session) -> VaccineScheme: 
@@ -24,6 +24,15 @@ def getVaccineByIdService (id: int, db: Session) -> VaccineScheme:
         if not vaccine: 
             raise HTTPException(status_code=400, detail="No se ha encontrado la vacuna")
         return vaccine
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+
+def getVaccineVaccineBoxService(db: Session) -> VaccineVaccineBoxScheme:
+    try: 
+        vaccines = getVaccinesWithVaccinesBoxRepository(db)
+        if not vaccines: 
+            raise HTTPException(status_code=400, detail="No se ha encontrado nada")
+        return vaccines
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
 def editVaccineService(id: int, vaccineToEdit: VaccineEditScheme, db: Session) -> VaccineScheme: 
