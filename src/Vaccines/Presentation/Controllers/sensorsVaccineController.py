@@ -4,7 +4,7 @@ from ...Domain.Scheme.sensorsVaccine import SensorsVaccineBase, SensorsVaccine, 
 from ...Application.Services.sensorsVaccine import createSensorsVaccineService, getSensorsVaccineService, sendToGuassCurveService
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
-def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Session = Depends(get_db)) -> SensorsVaccine:
+def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Session = Depends(get_db), userData = jwtAuth("IoT")) -> SensorsVaccine:
     if not sensorsVaccine.nameSensor:
         raise HTTPException(status_code=400, detail="Se requiere un nombre para el sensor")
     if not sensorsVaccine.measurementUnit: 
@@ -18,5 +18,5 @@ def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Sessi
 def getSensorsVaccineController(db: Session = Depends(get_db)) -> list[SensorsVaccine]:
         return getSensorsVaccineService(db)
 
-def sendToGaussController(db: Session = Depends(get_db)) -> GraficResponse: 
+def sendToGaussController(db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> GraficResponse: 
      return sendToGuassCurveService(db)

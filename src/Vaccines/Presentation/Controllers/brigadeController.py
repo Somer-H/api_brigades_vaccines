@@ -20,32 +20,32 @@ def getBrigadesController(db: Session = Depends(get_db), userData = jwtAuth("dir
     brigades = getBrigadesService(db)
     return brigades
 
-def getBrigadeWithLocationsByIdController(id: int, db: Session = Depends(get_db)) -> list[BrigadeAndLocationsScheme]: 
+def getBrigadeWithLocationsByIdController(id: int, db: Session = Depends(get_db), userData = jwtAuth("director")) -> list[BrigadeAndLocationsScheme]: 
     brigade = getBrigadeWithLocationsByIdService(id, db)
     return brigade
 
-def editBrigadeController(id: int, brigade: BrigadeUpdateScheme, db: Session = Depends(get_db)) -> BrigadeFullScheme: 
+def editBrigadeController(id: int, brigade: BrigadeUpdateScheme, db: Session = Depends(get_db), userData = jwtAuth("director")) -> BrigadeFullScheme: 
     if not id: 
         raise HTTPException(status_code=400, detail="Debe ingresar un ID")
     if id <= 0: 
         raise HTTPException(status_code=400, detail="La ID no debe ser igual o menor que 0")
     return editBrigadeService(id, brigade, db)
 
-def editLocationController(id: int, location: LocationUpdateScheme, db: Session = Depends(get_db)) -> LocationScheme: 
+def editLocationController(id: int, location: LocationUpdateScheme, db: Session = Depends(get_db), userData = jwtAuth("director")) -> LocationScheme: 
     if not id:
         raise HTTPException(status_code=400, detail="Debe ingresar un ID")
     if id <= 0: 
         raise HTTPException(status_code=400, detail="La ID no puede ser menor o igual que 0")
     return editLocationService(id, location, db)
 
-def deleteBrigadeController(id: int, db: Session = Depends(get_db)) -> str:
+def deleteBrigadeController(id: int, db: Session = Depends(get_db), userData = jwtAuth("director")) -> str:
     if not id: 
         raise HTTPException(status_code=400, detail="Debe ingresar")
     if id <= 0: 
         raise HTTPException(status_code=400, detail="La ID no puede ser igual o menor que 0")
     return deleteBrigadeService(id, db)
 
-def deleteLocationController(id: int, db: Session = Depends(get_db)) -> str: 
+def deleteLocationController(id: int, db: Session = Depends(get_db), userData = jwtAuth("director")) -> str: 
     if not id: 
         raise HTTPException(status_code=400, detail="Debe ingresar una ID")
     if id <= 0: 
