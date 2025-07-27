@@ -4,10 +4,10 @@ from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme,
 from sqlalchemy.orm import Session
 
 def createVaccineService (vaccine: VaccineBaseScheme, db: Session) -> VaccineScheme: 
-    try: 
+    try:
         cretedVaccine = createVaccineRepository(vaccine, db)
         return cretedVaccine
-    except Exception as e: 
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 def getVaccinesService (db: Session) -> list[VaccineScheme]: 
@@ -27,7 +27,7 @@ def getVaccineByIdService (id: int, db: Session) -> VaccineScheme:
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
 
-def getVaccineVaccineBoxService(db: Session) -> VaccineVaccineBoxScheme:
+def getVaccineVaccineBoxService(db: Session) -> list[VaccineVaccineBoxScheme]:
     try: 
         vaccines = getVaccinesWithVaccinesBoxRepository(db)
         if not vaccines: 

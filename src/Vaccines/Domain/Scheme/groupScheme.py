@@ -5,7 +5,7 @@ class GroupSchemeBase(BaseModel):
     nameGroup: str
     dateGroup: str
     idVaccineBox: int
-
+    idBrigade: int
     class Config:
         orm_mode = True
 class GroupScheme(GroupSchemeBase):
@@ -17,6 +17,6 @@ class GroupEditScheme(BaseModel):
     nameGroup: Optional[str] = None
     dateGroup: Optional[str] = None
     idVaccineBox: Optional[int] = None
-
+    idBrigade: Optional[int] = None
     class Config:
         orm_mode = True

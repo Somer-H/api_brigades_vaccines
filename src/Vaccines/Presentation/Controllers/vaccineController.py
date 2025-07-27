@@ -19,7 +19,7 @@ def getVaccineByIdController (id: int, db: Session = Depends(get_db), userData =
         raise HTTPException(status_code=400, detail="La ID no debe ser menor a 0")
     return getVaccineByIdService(id, db)
 
-def getVaccineVaccineBoxController (db: Session = Depends(get_db)) -> VaccineVaccineBoxScheme: 
+def getVaccineVaccineBoxController (db: Session = Depends(get_db)) -> list[VaccineVaccineBoxScheme]: 
     return getVaccineVaccineBoxService(db)
 def editVaccineController (id: int, vaccine: VaccineEditScheme, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> VaccineScheme: 
     if not id: 
