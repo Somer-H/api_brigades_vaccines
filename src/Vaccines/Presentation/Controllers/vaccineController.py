@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
-from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme, VaccineVaccineBoxScheme
-from ...Application.Services.vaccineService import createVaccineService, editVaccineService, deleteVaccineService, getVaccinesService, getVaccineByIdService, getVaccineVaccineBoxService
+from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme, VaccineVaccineBoxScheme, UserVaccinatedScheme
+from ...Application.Services.vaccineService import createVaccineService, editVaccineService, deleteVaccineService, getVaccinesService, getVaccineByIdService, getVaccineVaccineBoxService, getUsersVaccinatedService
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
 
@@ -34,3 +34,10 @@ def deleteVaccineController (id: int, db: Session = Depends(get_db), userData = 
     if id <= 0: 
         raise HTTPException(status_code=400, detail="La ID no debe ser menor o igual a 0")
     return deleteVaccineService(id, db)
+
+def getUsersVaccinatedController(id: int, db: Session = Depends(get_db)) -> list[UserVaccinatedScheme]:
+    if not id: 
+        raise HTTPException(status_code=400, detail="Debe ingresar una ID")
+    if id <= 0: 
+        raise HTTPException(status_code=400, detail="La ID no puede ser menor o igual que 0")
+    return getUsersVaccinatedService(id, db)

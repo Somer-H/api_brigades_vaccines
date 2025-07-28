@@ -1,5 +1,7 @@
 from ...Infraestructure.Models.vaccineModel import VaccineModel
-from ...Domain.Scheme.vaccineScheme import VaccineScheme, VaccineBaseScheme, VaccineEditScheme, VaccineVaccineBoxScheme
+from ...Infraestructure.Models.userCivilModel import UserCivilModel, UserCivilVaccinatedModel
+from ...Infraestructure.Models.userModel import User
+from ...Domain.Scheme.vaccineScheme import VaccineScheme, VaccineBaseScheme, VaccineEditScheme, VaccineVaccineBoxScheme, UserVaccinatedScheme
 from ...Infraestructure.Models.vaccineBoxModel import VaccineBoxVaccineModel, VaccineBoxModel
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
@@ -29,6 +31,36 @@ def getVaccineByIdRepository(id: int, db: Session) -> VaccineScheme:
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
 
+def getUsersVaccinatedByIdHospitalRepository(id: int, db: Session) -> list[UserVaccinatedScheme]:
+    usersVaccinated = db.query(
+        UserCivilModel.idUserCivil,
+        UserCivilModel.fol,
+        UserCivilModel.name,
+        UserCivilModel.firstLastname,
+        UserCivilModel.secondLastname,
+        UserCivilModel.CURP,
+        UserCivilModel.yearsOld,
+        UserCivilVaccinatedModel.date,
+        VaccineModel.idVaccines,
+        VaccineModel.nameVaccine,
+        User.name.label('medic_name'),
+        User.lastname.label('medic_lastname')
+    ).select_from(
+        UserCivilModel
+    ).join(
+        UserCivilVaccinatedModel, 
+        UserCivilModel.idUserCivil == UserCivilVaccinatedModel.UserCivil_idUserCivil
+    ).join(
+        VaccineModel,
+        UserCivilVaccinatedModel.Vaccine_idVaccines == VaccineModel.idVaccines
+    ).join(
+        User,
+        UserCivilVaccinatedModel.UserCivil_UserMedicVaccined == User.idUser
+    ).filter(
+        User.idHospital == str(id)
+    ).all()
+
+    return usersVaccinated
 def getVaccinesWithVaccinesBoxRepository(db: Session) -> list[VaccineVaccineBoxScheme]:
     try:
         vaccines = db.query(

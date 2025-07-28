@@ -1,6 +1,6 @@
-from ...Infraestructure.Repositories.vaccineRepository import createVaccineRepository, getVaccineByIdRepository, getVaccinesRepository, deleteVaccineRepository, editVaccineRepository, getVaccinesWithVaccinesBoxRepository
+from ...Infraestructure.Repositories.vaccineRepository import createVaccineRepository, getVaccineByIdRepository, getVaccinesRepository, deleteVaccineRepository, editVaccineRepository, getVaccinesWithVaccinesBoxRepository, getUsersVaccinatedByIdHospitalRepository
 from fastapi import HTTPException
-from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme, VaccineVaccineBoxScheme
+from ...Domain.Scheme.vaccineScheme import VaccineBaseScheme, VaccineEditScheme, VaccineScheme, VaccineVaccineBoxScheme, UserVaccinatedScheme
 from sqlalchemy.orm import Session
 
 def createVaccineService (vaccine: VaccineBaseScheme, db: Session) -> VaccineScheme: 
@@ -31,7 +31,7 @@ def getVaccineVaccineBoxService(db: Session) -> list[VaccineVaccineBoxScheme]:
     try: 
         vaccines = getVaccinesWithVaccinesBoxRepository(db)
         if not vaccines: 
-            raise HTTPException(status_code=400, detail="No se ha encontrado nada")
+            return []
         return vaccines
     except Exception as e: 
         raise HTTPException(status_code=500, detail=str(e))
@@ -55,4 +55,13 @@ def deleteVaccineService(id: int, db: Session) -> str:
             raise HTTPException(status_code=400, detail="No se ha encontrado la vacuna")
         return "Eliminado con éxito"
     except Exception as e: 
+        raise HTTPException(status_code=500, detail=str(e))
+    
+def getUsersVaccinatedService(id: int, db: Session) -> list[UserVaccinatedScheme]:
+    try: 
+        users = getUsersVaccinatedByIdHospitalRepository(id, db)
+        if not users:  
+            return []
+        return users
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

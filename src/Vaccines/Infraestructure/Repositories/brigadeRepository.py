@@ -83,7 +83,7 @@ def deleteBrigadeRepository(id: int, db: Session) -> bool:
 
 def deleteLocationRepository(id: int, db: Session) -> bool: 
     try: 
-        locationToDelete = db.query(LocationModel).filter(LocationModel.idLocation).first()
+        locationToDelete = db.query(LocationModel).filter(LocationModel.idLocation == id).first()
         if not locationToDelete: 
             #No la encontró
             return False
