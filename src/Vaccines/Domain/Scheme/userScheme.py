@@ -25,7 +25,7 @@ class UserEditScheme(BaseModel):
     name: Optional[str] = None
     lastname: Optional[str] = None
     idHospital: Optional[int] = None
-    idUserCivil : Optional[str] = None
+    idUserCivil : Optional[int] = None
     class Config:
         orm_mode = True
 class Login(BaseModel): 
@@ -42,6 +42,6 @@ class UserResponse(BaseModel):
     name: str 
     lastname: str
     idHospital: Optional[int] = None
-    idUserCivil: Optional[str] = None
+    idUserCivil: Optional[int] = None
     class Config:
         orm_mode: True
