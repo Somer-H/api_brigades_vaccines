@@ -9,7 +9,7 @@ class UserSchemeBase(BaseModel):
     name: str
     lastname: str
     idHospital: Optional[int] = None
-    idUserCivil: Optional[str] = None
+    idUserCivil: Optional[int] = None
     class Config:
         orm_mode = True
 class UserScheme(UserSchemeBase):
