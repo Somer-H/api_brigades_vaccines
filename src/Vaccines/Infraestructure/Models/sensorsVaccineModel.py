@@ -4,7 +4,7 @@ from ....Shared.mysql import Base
 class SensorsVaccineModel(Base): 
     __tablename__ = "SensorsVaccine"
     
-    idSensorsVaccine = Column(Integer, primary_key=True, nullable=True, autoincrement=True)
+    idSensorsVaccine = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     measurementUnit = Column(String, nullable=False)
     nameSensor = Column(String, nullable=False)
     information = Column(Float, nullable=False)
