@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
 from ....Shared.auth import jwtAuth
 from ....Shared.mysql import get_db
-def createUserController(user: UserSchemeBase, db: Session = Depends(get_db), userData = jwtAuth("director")) -> UserResponse:
+def createUserController(user: UserSchemeBase, db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> UserResponse:
     if not user.name:
         raise HTTPException(status_code=400, detail="El nombre es obligatorio")
     if not user.lastname:
