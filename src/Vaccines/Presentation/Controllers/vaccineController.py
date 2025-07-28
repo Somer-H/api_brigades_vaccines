@@ -10,7 +10,7 @@ def createVaccineController (vaccine: VaccineBaseScheme, db: Session = Depends(g
         raise HTTPException("El campo del nombre de la vacuna es obligatorio")
     return createVaccineService(vaccine, db)
 
-def getVaccinesController (db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> list[VaccineScheme]: 
+def getVaccinesController (db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director", "lider", "enfermero"))) -> list[VaccineScheme]: 
     return getVaccinesService(db)
 def getVaccineByIdController (id: int, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> VaccineScheme: 
     if not id: 
