@@ -5,7 +5,7 @@ from ...Application.Services.vaccineService import createVaccineService, editVac
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
 
-def createVaccineController (vaccine: VaccineBaseScheme, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles="director")) -> VaccineScheme: 
+def createVaccineController (vaccine: VaccineBaseScheme, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director", "enfermero"))) -> VaccineScheme: 
     if not vaccine.nameVaccine: 
         raise HTTPException("El campo del nombre de la vacuna es obligatorio")
     return createVaccineService(vaccine, db)
