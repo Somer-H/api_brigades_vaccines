@@ -15,7 +15,7 @@ def createUserController(user: UserSchemeBase, db: Session = Depends(get_db), us
     if not user.role: 
         raise HTTPException (status_code=400, detail="Campo obligatorio")
     return createUserService(user, db)
-def getUserController(db: Session = Depends(get_db), userData = jwtAuth(("director"))) -> list[UserResponse]:
+def getUserController(db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> list[UserResponse]:
     return getUserService(db)
 
 def getLeadersAndNurseController(db: Session = Depends(get_db), userData = jwtAuth("director")) -> list[UserResponse]:
