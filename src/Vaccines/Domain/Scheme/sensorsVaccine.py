@@ -35,3 +35,6 @@ class GraficResponse(BaseModel):
     range: float
     variance: float
     points: List[GaussPoint]
+    inputPoint: Optional[GaussPoint] = None  
+class TemperatureInput(BaseModel):
+    value: float 

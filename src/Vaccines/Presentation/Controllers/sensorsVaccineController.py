@@ -1,7 +1,7 @@
 from fastapi import HTTPException, Depends
 from sqlalchemy.orm import Session
-from ...Domain.Scheme.sensorsVaccine import SensorsVaccineBase, SensorsVaccine, GraficResponse
-from ...Application.Services.sensorsVaccine import createSensorsVaccineService, getSensorsVaccineService, sendToGuassCurveService
+from ...Domain.Scheme.sensorsVaccine import SensorsVaccineBase, SensorsVaccine, GraficResponse, TemperatureInput
+from ...Application.Services.sensorsVaccine import createSensorsVaccineService, getSensorsVaccineService, sendToGuassCurveService, pointInGaussCurveService
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
 def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Session = Depends(get_db)) -> SensorsVaccine:
@@ -20,3 +20,8 @@ def getSensorsVaccineController(db: Session = Depends(get_db)) -> list[SensorsVa
 
 def sendToGaussController(db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> GraficResponse: 
      return sendToGuassCurveService(db)
+
+def inputGaussController(point: TemperatureInput, db: Session = Depends(get_db)) -> GraficResponse: 
+     if not point.value: 
+          raise HTTPException(status_code=400, detail="debe ingresar algún valor")
+     return pointInGaussCurveService(point, db)
