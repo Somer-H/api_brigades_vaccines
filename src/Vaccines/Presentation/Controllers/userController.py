@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
 from ....Shared.auth import jwtAuth
 from ....Shared.mysql import get_db
-def createUserController(user: UserSchemeBase, db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> UserResponse:
+def createUserController(user: UserSchemeBase, db: Session = Depends(get_db)) -> UserResponse:
     if not user.name:
         raise HTTPException(status_code=400, detail="El nombre es obligatorio")
     if not user.lastname:
@@ -15,12 +15,12 @@ def createUserController(user: UserSchemeBase, db: Session = Depends(get_db), us
     if not user.role: 
         raise HTTPException (status_code=400, detail="Campo obligatorio")
     return createUserService(user, db)
-def getUserController(db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> list[UserResponse]:
+def getUserController(db: Session = Depends(get_db)) -> list[UserResponse]:
     return getUserService(db)
 
-def getLeadersAndNurseController(db: Session = Depends(get_db), userData = jwtAuth("director")) -> list[UserResponse]:
+def getLeadersAndNurseController(db: Session = Depends(get_db)) -> list[UserResponse]:
     return getLeadersAndNurseService(db)
-def getUserByIdController(id: int, db: Session = Depends(get_db), userData = jwtAuth("director")) -> UserResponse:
+def getUserByIdController(id: int, db: Session = Depends(get_db)) -> UserResponse:
     if not id:
         raise HTTPException(status_code=400, detail="Se requiere un ID")
     if id < 0:
@@ -29,7 +29,7 @@ def getUserByIdController(id: int, db: Session = Depends(get_db), userData = jwt
     if not userMedicPersonalToReturn:
         raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
     return userMedicPersonalToReturn
-def editUserController(id: int, userToEdit: UserEditScheme, db: Session = Depends(get_db), userData = jwtAuth("director")) -> UserResponse:
+def editUserController(id: int, userToEdit: UserEditScheme, db: Session = Depends(get_db)) -> UserResponse:
     if not id:
         raise HTTPException(status_code=400, detail="Se requiere un ID")
     if id < 0:
@@ -39,7 +39,7 @@ def editUserController(id: int, userToEdit: UserEditScheme, db: Session = Depend
         return updatedUserMedicPersonal
     else:
         raise HTTPException(status_code=404, detail="Usuario médico personal no encontrado")
-def deleteUserController(id: int, db: Session = Depends(get_db), userData = jwtAuth("director")) -> str:
+def deleteUserController(id: int, db: Session = Depends(get_db)) -> str:
     if not id:
         raise HTTPException(status_code=400, detail="Se requiere un ID")
     if id < 0:

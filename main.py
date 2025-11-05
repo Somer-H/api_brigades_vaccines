@@ -7,6 +7,8 @@ from src.Vaccines.Presentation.Routes.userRouter import router as User
 from src.Vaccines.Presentation.Routes.groupRoutes import router as GroupsRouter
 from src.Vaccines.Presentation.Routes.vaccineRoutes import router as VaccineRouter
 from src.Vaccines.Presentation.Routes.brigadeRoutes import router as BrigadeRouter
+from src.Shared.create_users import create_demo_users
+
 security = HTTPBearer()
 app = FastAPI()
 app.add_middleware(
@@ -17,6 +19,15 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"]
 )
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Se ejecuta al iniciar la aplicación crea 3 usuarios con cada uno de los roles"""
+    print("Iniciando aplicación...")
+    create_demo_users()
+    print("Aplicación lista")
+
 app.include_router(User, prefix="/api", tags=["Users"])
 app.include_router(VaccineBoxRouter, prefix="/api", tags=["VaccineBoxes"])
 app.include_router(SensorsVaccineRouter, prefix="/api", tags=["SensorsVaccine"])

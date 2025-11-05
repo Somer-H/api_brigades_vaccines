@@ -18,7 +18,7 @@ def createSensorsVaccineController(sensorsVaccine: SensorsVaccineBase, db: Sessi
 def getSensorsVaccineController(db: Session = Depends(get_db)) -> list[SensorsVaccine]:
         return getSensorsVaccineService(db)
 
-def sendToGaussController(db: Session = Depends(get_db), userData = jwtAuth(("director", "enfermero", "lider"))) -> GraficResponse: 
+def sendToGaussController(db: Session = Depends(get_db)) -> GraficResponse: 
      return sendToGuassCurveService(db)
 
 def inputGaussController(point: TemperatureInput, db: Session = Depends(get_db)) -> GraficResponse: 

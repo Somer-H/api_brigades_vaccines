@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException
 from ....Shared.mysql import get_db
 from ....Shared.auth import jwtAuth
 from sqlalchemy.orm import Session
-def createGroupController(group: GroupSchemeBase, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director"))) -> GroupScheme:
+def createGroupController(group: GroupSchemeBase, db: Session = Depends(get_db)) -> GroupScheme:
     if not group.nameGroup or not group.dateGroup:
         raise HTTPException("El nombre y la fecha del grupo son obligatorios")
     if not group.idVaccineBox:
@@ -13,24 +13,24 @@ def createGroupController(group: GroupSchemeBase, db: Session = Depends(get_db),
         raise HTTPException("Se requiere una fecha para el grupo")    
     return createGroupService(group, db)
 
-def getGroupController(db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director"))) -> list[GroupScheme]:
+def getGroupController(db: Session = Depends(get_db)) -> list[GroupScheme]:
         groupGet = getGroupService(db)
         return groupGet 
-def getGroupByIdController(id: int, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director"))) -> GroupScheme:
+def getGroupByIdController(id: int, db: Session = Depends(get_db)) -> GroupScheme:
     if not id:
         raise HTTPException("Se requiere un ID")
     if id < 0:
         raise HTTPException("La ID no puede ser negativa")
     return getGroupByIdService(id, db)
 
-def editGroupController(id: int, groupToEdit: GroupEditScheme, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director"))) -> GroupScheme:
+def editGroupController(id: int, groupToEdit: GroupEditScheme, db: Session = Depends(get_db)) -> GroupScheme:
     if not id:
         raise HTTPException("Se requiere un ID")
     if id < 0:
         raise HTTPException("La ID no puede ser negativa")
     return editGroupService(id, groupToEdit, db)
 
-def deleteGroupController(id: int, db: Session = Depends(get_db), userData = jwtAuth(expectedRoles=("director"))) -> str:
+def deleteGroupController(id: int, db: Session = Depends(get_db)) -> str:
     if not id:
         raise HTTPException("Se requiere un ID")
     if id < 0:
