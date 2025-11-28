@@ -38,7 +38,7 @@ class UserResponse(BaseModel):
     idUser: int
     username: str
     role: str
-    groupIdGroup: int
+    groupIdGroup: Optional[int] = None
     name: str 
     lastname: str
     idHospital: Optional[int] = None
