@@ -25,6 +25,10 @@ app.add_middleware(
 async def startup_event():
     """Se ejecuta al iniciar la aplicación crea 3 usuarios con cada uno de los roles"""
     print("Iniciando aplicación...")
+    from src.Shared.mysql import Base, engine
+    Base.metadata.create_all(bind=engine)
+    print("Tablas creadas (si no existían)")
+
     create_demo_users()
     print("Aplicación lista")
 

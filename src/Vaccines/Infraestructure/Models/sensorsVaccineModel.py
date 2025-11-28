@@ -5,7 +5,7 @@ class SensorsVaccineModel(Base):
     __tablename__ = "SensorsVaccine"
     
     idSensorsVaccine = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    measurementUnit = Column(String, nullable=False)
-    nameSensor = Column(String, nullable=False)
+    measurementUnit = Column(String(50), nullable=False)
+    nameSensor = Column(String(100), nullable=False)
     information = Column(Float, nullable=False)
     idVaccineBox = Column(Integer, ForeignKey("VaccineBox.idVaccineBox"), nullable=False)

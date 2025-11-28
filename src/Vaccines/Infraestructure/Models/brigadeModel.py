@@ -5,7 +5,7 @@ class BrigadeModel(Base):
     __tablename__ = "Brigade"
 
     idBrigade = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    referenceBrigade = Column(String, nullable=False)
+    referenceBrigade = Column(String(100), nullable=False)
     startDate = Column(DateTime, nullable=False)
     endDate = Column(DateTime, nullable=False)
 
@@ -14,4 +14,4 @@ class LocationModel(Base):
 
     idLocation = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     idBrigade = Column(Integer, ForeignKey("Brigade.idBrigade"), primary_key=True, nullable=False)
-    location = Column(String, nullable=False)
+    location = Column(String(200), nullable=False)

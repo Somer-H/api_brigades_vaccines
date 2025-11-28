@@ -1,8 +1,6 @@
-# src/Shared/create_users.py
 import sys
 import os
 
-# Agregar el directorio raíz al path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 import bcrypt
@@ -10,7 +8,6 @@ from sqlalchemy import text
 from src.Shared.mysql import SessionLocal
 
 def create_demo_users():
-    # Contraseñas personalizadas
     passwords = {
         'enfermero_demo': 'enfermero123',
         'paciente_demo': 'paciente123',
@@ -26,19 +23,17 @@ def create_demo_users():
             DELETE FROM User 
             WHERE username IN ('enfermero_demo', 'paciente_demo', 'director_demo')
         """))
-        
-        # Generar hashes
+
         hashes = {}
         for username, password in passwords.items():
             hashes[username] = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        
-        # Insertar usuarios
+
         db.execute(text(f"""
             INSERT INTO User (username, password, role, name, lastname, groupIdGroup)
             VALUES 
-                ('enfermero_demo', '{hashes["enfermero_demo"]}', 'enfermero', 'María', 'González', 1),
-                ('paciente_demo', '{hashes["paciente_demo"]}', 'paciente', 'Juan', 'Pérez', 1),
-                ('director_demo', '{hashes["director_demo"]}', 'director', 'Carlos', 'Ramírez', 1)
+                ('enfermero_demo', '{hashes["enfermero_demo"]}', 'enfermero', 'María', 'González', NULL),
+                ('paciente_demo', '{hashes["paciente_demo"]}', 'paciente', 'Juan', 'Pérez', NULL),
+                ('director_demo', '{hashes["director_demo"]}', 'director', 'Carlos', 'Ramírez', NULL)
         """))
         
         db.commit()
