@@ -98,6 +98,7 @@ def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSO
             groupIdGroup=userFound.groupIdGroup,
             name=userFound.name,
             lastname=userFound.lastname,
+            idUserCivil=userFound.idUserCivil
         )
         response_json = response_data.dict()
         response = JSONResponse(content=response_json, status_code=200)

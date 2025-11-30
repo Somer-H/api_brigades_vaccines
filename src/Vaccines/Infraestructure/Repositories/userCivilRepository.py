@@ -22,10 +22,11 @@ def getCivilUsersWithoutAccountRepository(db: Session) -> List[UserCivilModel]:
         raise HTTPException(status_code=500, detail=f"Error al obtener usuarios civiles: {str(e)}")
 
 def getUserAccountsRepository(db: Session) -> List[User]:
-    """Obtiene todas las cuentas de usuario con su información de usuario civil"""
+    """Obtiene todas las cuentas de usuario con rol de paciente y su información de usuario civil"""
     try:
         accounts = db.query(User).filter(
-            User.idUserCivil.isnot(None)
+            User.idUserCivil.isnot(None),
+            User.role == "paciente"
         ).all()
         return accounts
     except Exception as e:

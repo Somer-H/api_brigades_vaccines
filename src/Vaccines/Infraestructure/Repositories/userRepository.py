@@ -8,7 +8,7 @@ def createUserRepository(user: UserSchemeBase, db: Session) -> UserResponse:
         # Verificar si ya existe una cuenta para este usuario civil
         if user.idUserCivil:
             existing_user = db.query(User).filter(
-                User.idUserCivil == str(user.idUserCivil)
+                User.idUserCivil == user.idUserCivil
             ).first()
             if existing_user:
                 raise HTTPException(

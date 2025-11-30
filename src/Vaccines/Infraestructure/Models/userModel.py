@@ -12,4 +12,4 @@ class User(Base):
     name = Column(String(50), nullable=False)
     lastname = Column(String(50), nullable=False)
     idHospital = Column(String(50), nullable=True)
-    idUserCivil = Column(String(50), nullable=True)
+    idUserCivil = Column(Integer, nullable=True)
