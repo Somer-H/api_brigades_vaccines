@@ -49,8 +49,20 @@ def deleteUserController(id: int, db: Session = Depends(get_db)) -> str:
     return "Eliminado con éxito"
 
 def loginController(userToLog: Login, db: Session = Depends(get_db)) -> JSONResponse: 
-    if not userToLog.username: 
-        raise HTTPException(status_code=400, detail="Necesita proporcionar un nombre de usuario")
-    if not userToLog.password: 
-        raise HTTPException(status_code=400, detail="Necesita proporcionar una contraseña")
-    return loginService(userToLog.username,userToLog.password, db)
+    # Validaciones básicas
+    if not userToLog.username or userToLog.username.strip() == "": 
+        raise HTTPException(
+            status_code=400, 
+            detail="El nombre de usuario es obligatorio"
+        )
+    
+    if not userToLog.password or userToLog.password.strip() == "": 
+        raise HTTPException(
+            status_code=400, 
+            detail="La contraseña es obligatoria"
+        )
+    
+    print("username", userToLog.username)
+    
+    # Llamar al servicio (que maneja los errores específicos)
+    return loginService(userToLog.username, userToLog.password, db)

@@ -6,6 +6,10 @@ import bcrypt
 from ....Shared.MiddleWares.loginMiddlewWare import generateToken
 from ....Shared.mysql import get_db
 from sqlalchemy.orm import Session
+import logging
+
+logger = logging.getLogger(__name__)
+
 def createUserService(user: UserSchemeBase, db: Session) -> UserResponse:
     try:
         password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
@@ -84,13 +88,24 @@ def deleteUserService(id: int, db: Session) -> str:
         raise HTTPException(status_code=500, detail=str(e))
 def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSONResponse:
     try:
-        userFound = getUserByUsernameService(user, db)
-        if not userFound:
-            raise HTTPException(status_code=404, detail="Usuario no encontrado")
-        if not bcrypt.checkpw(password.encode('utf-8'), userFound.password.encode('utf-8')):
-            print(userFound.password)
-            raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+        logger.info(f"Intento de login para usuario: {user}")
+        userFound = getUserByUsernameRepository(user, db)
+        
+        # Usuario no existe O contraseña incorrecta = mismo mensaje genérico
+        if not userFound or not bcrypt.checkpw(password.encode('utf-8'), userFound.password.encode('utf-8')):
+            logger.warning(f"Credenciales inválidas para usuario: {user}")
+            raise HTTPException(
+                status_code=401,
+                detail={
+                    "type": "invalid_credentials",
+                    "message": "Credenciales inválidas"
+                }
+            )
+        
+        # Login exitoso
+        logger.info(f"Login exitoso para usuario: {user}")
         token = generateToken(user, userFound.role)
+        
         response_data = UserResponse(
             idUser=userFound.idUser,
             username=userFound.username,
@@ -98,12 +113,24 @@ def loginService(user: str, password: str, db: Session = Depends(get_db)) -> JSO
             groupIdGroup=userFound.groupIdGroup,
             name=userFound.name,
             lastname=userFound.lastname,
+            idHospital=userFound.idHospital,
             idUserCivil=userFound.idUserCivil
         )
+        
         response_json = response_data.dict()
         response = JSONResponse(content=response_json, status_code=200)
         response.headers["Authorization"] = f"Bearer {token}"
+        
         return response
+        
+    except HTTPException:
+        raise
     except Exception as e:
-        print(f"Error en loginMedicRepository: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error en loginService: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail={
+                "type": "server_error",
+                "message": "Error interno del servidor"
+            }
+        )
