@@ -30,8 +30,9 @@ def createVaccineBoxVaccineService(vaccineBoxVaccine: VaccineBoxVaccinesScheme, 
 def getVaccineBoxService(db: Session) -> list[VaccineBox]:
     try:
         vaccineBoxToReturn = getVaccineBoxRepository(db)
+        # ✅ Si no hay cajas, devuelve lista vacía en lugar de error 404
         if not vaccineBoxToReturn:
-            raise HTTPException(status_code=404, detail="No se encontraron Hieleras de vacunas")
+            return []
         return vaccineBoxToReturn
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

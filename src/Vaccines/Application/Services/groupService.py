@@ -10,8 +10,9 @@ def createGroupService(group: GroupSchemeBase, db: Session) -> GroupScheme:
 def getGroupService(db: Session) -> list[GroupScheme]:
     try: 
         groupGet = getGroupRepository(db)
+        # Si no hay grupos, devuelve lista vacía en lugar de error
         if not groupGet:
-            raise HTTPException(status_code=404, detail="No se encontraron Grupos")
+            return []
         return groupGet
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
